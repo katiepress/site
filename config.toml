@@ -61,7 +61,7 @@ disableLanguages        = []
       alt                 = "Hugo Future Imperfect Slim"
 
   [params.sidebar]
-    about               = "This theme was developed for Hugo static site generator."
+#    about               = "This theme was developed for Hugo static site generator."
     postAmount          = 5
     categories          = true
     categoriesByCount   = true
