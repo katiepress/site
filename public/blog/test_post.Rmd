@@ -1,13 +1,13 @@
 ---
-title: "Test Post"
+title: "The Truth is Out There"
 author: "Katie Press"
-description: "This is a test of my test posting abilities"
+description: "Creating an X-Files episode dataset using web scraping."
 categories: ["R", "syntax"]
 tags: ["rmarkdown", "css"]
 date: "2021-01-01"
 images:
-- alt: Mountain Range Through Clouds
-  src: img/2019/03/pic01.jpg
+- alt: X Files Chart 1
+  src: img/2021/thetruth1_plot1.png
   stretch: horizontal
 output: 
   blogdown::html_page:
