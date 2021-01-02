@@ -22,12 +22,12 @@ disableLanguages        = []
   jsFiles               = ["default"]
   highlightjs           = true
   highlightjsTheme      = ""
-  highlightjsLang       = []
+  highlightjsLang       = ["R", "yaml"]
   viewMorePostsLink     = "/blog/"
   readingTime           = true
   imageStretch          = ""
   removeBlur            = false
-  socialShare           = ["twitter", "facebook", "reddit", "linkedin", "pinterest", "email"]
+  socialShare           = ["twitter", "linkedin", "email"]
   hideEmptyStats        = false
 
   [params.meta]
@@ -40,22 +40,22 @@ disableLanguages        = []
     iOSColor            = "#ffffff"
 
   [params.header]
-    navbarTitle         = "Future Imperfect"
-    dynamicTitles       = true
+    navbarTitle         = "<img src='/img/main/kpress_squarelogo.svg'>"
+    dynamicTitles       = false
     searchMenu          = true
     shareMenu           = true
     languageMenu        = true
 
   [params.intro]
     header                = "Katie Press"
-    paragraph             = "Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>."
+    paragraph             = "R Programmer, Data Enthusiast, Researcher"
     rssIntro              = true
     socialIntro           = true
     hideWhenSingleColumn  = false
     alwaysOnHomepage      = false
 
     [params.intro.pic]
-      src                 = "img/main/logo.jpg"
+      src                 = "img/main/tuxedo.jpg"
       shape               = "circle"
       width               = ""
       alt                 = "Hugo Future Imperfect Slim"
@@ -319,7 +319,7 @@ disableLanguages        = []
 
 [social]
   # Coding Communities
-  github                = "pacollins/hugo-future-imperfect-slim"
+  github                = ""
   gitlab                = ""
   stackoverflow         = "" # User Number
   bitbucket             = ""
@@ -327,22 +327,22 @@ disableLanguages        = []
   codepen               = ""
   # Visual Art Communities
   deviantart            = ""
-  flickr                = "example"
+  flickr                = ""
   behance               = ""
   dribbble              = ""
   # Publishing Communities
   wordpress             = ""
   medium                = ""
   # Professional/Business Oriented Communities
-  linkedin              = "example"
-  linkedin_company      = "examplebusiness"
+  linkedin              = "katiepress"
+  linkedin_company      = ""
   foursquare            = ""
   xing                  = ""
   slideshare            = ""
   # Social Networks
-  facebook              = "example"
+  facebook              = ""
   googleplus            = ""
-  reddit                = "example"
+  reddit                = ""
   quora                 = ""
   youtube               = ""
   vimeo                 = ""
@@ -350,19 +350,19 @@ disableLanguages        = []
     # WeChat and QQ need testing.
     wechat              = ""
     qq                  = "" # User ID Number
-  instagram             = "example"
+  instagram             = ""
   tumblr                = ""
-  twitter               = "example"
+  twitter               = "katie_press"
   strava                = ""
   skype                 = ""
   snapchat              = ""
-  pinterest             = "example"
-  telegram              = "example"
+  pinterest             = ""
+  telegram              = ""
   vine                  = ""
   googlescholar         = ""
   orcid                 = ""
-  researchgate          = "example"
-  keybase               = "example"
-  mastodon              = "example.com/@example"
+  researchgate          = ""
+  keybase               = ""
+  mastodon              = ""
   # Email
-  email                 = "example"
+  email                 = "katherine.e.press@gmail.com"
