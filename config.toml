@@ -2,8 +2,8 @@
 # https://github.com/pacollins/hugo-future-imperfect-slim/wiki/config.toml
 baseurl                 = "https://www.katiepress.com/"
 DefaultContentLanguage  = "en"
-title                   = "Hugo Future Imperfect Slim"
-theme = "hugo-future-imperfect-slim"
+title                   = "Kpress R Blog"
+theme                   = "hugo-future-imperfect-slim"
 paginate                = 3
 disqusShortname         = ""
 googleAnalytics         = ""
@@ -47,7 +47,7 @@ disableLanguages        = []
     languageMenu        = true
 
   [params.intro]
-    header                = "Hugo Future Imperfect Slim"
+    header                = "Katie Press"
     paragraph             = "Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>."
     rssIntro              = true
     socialIntro           = true
