@@ -91,12 +91,12 @@ disableLanguages        = []
     pre               = "<i class='fa fa-home'></i>"
     weight            = 1
 
-  [[menu.main]]
-    name              = "About"
-    identifier        = "about"
-    url               = "/about/"
-    pre               = "<i class='far fa-id-card'></i>"
-    weight            = 2
+#  [[menu.main]]
+#    name              = "About"
+#    identifier        = "about"
+#    url               = "/about/"
+#    pre               = "<i class='far fa-id-card'></i>"
+#    weight            = 2
 
   [[menu.main]]
     name              = "Blog"
