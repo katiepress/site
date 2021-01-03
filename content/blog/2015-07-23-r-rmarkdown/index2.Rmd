@@ -1,13 +1,12 @@
 ---
 title: "A New Test Post"
 author: "Katie Press"
-date: 2015-07-23T21:13:14-05:00
+date: 2021-07-23T21:13:14-05:00
 categories: ["R"]
 tags: ["R Markdown", "plot", "regression"]
 output: 
   html_document: 
     keep_md: yes
-    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
