@@ -1,11 +1,10 @@
 ---
-author: Hugo Authors
+author: Katie Press
 categories:
 - themes
 - syntax
-date: "2019-03-11"
-description: Sample article showcasing basic Markdown syntax and formatting for HTML
-  elements.
+date: "2021-03-11"
+description: Test of Rmarkdown MD Syntax.
 images:
 - alt: Mountain Range Through Clouds
   src: img/2019/03/pic01.jpg
