@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://www.katiepress.com/blog/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -19,7 +19,7 @@
   
   <url>
     <loc>https://www.katiepress.com/categories/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -74,7 +74,7 @@
   
   <url>
     <loc>https://www.katiepress.com/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -129,27 +129,27 @@
   
   <url>
     <loc>https://www.katiepress.com/tags/plot/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.katiepress.com/categories/r/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.katiepress.com/tags/r-markdown/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.katiepress.com/tags/regression/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.katiepress.com/tags/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -200,6 +200,11 @@
                 hreflang="en"
                 href="https://www.katiepress.com/tags/"
                 />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there/</loc>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
   </url>
   
   <url>

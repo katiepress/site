@@ -1,0 +1,81 @@
+---
+title: The Truth Is Out There
+author: "Katie Press"
+date: 2021-01-02T21:13:14-05:00
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+output: 
+  blogdown::html_page: 
+    keep_md: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+
+library(tidyverse)
+library(rvest)
+library(janitor)
+library(lubridate)
+library(ggiraph)
+library(extrafont)
+library(tidytext)
+```
+
+
+
+I'm a huge X-Files fan. I also love working with text data. I've had an idea floating around for a while to do a tidy text analysis on X-Files episode scripts. The X-Files has been around long enough that there are tons of fandom sites, and you can easily find transcripts of the original 9 seasons.First, I wanted to get some basic information about the episodes, so that's what this post will focus on. My first thought was to go to Wikipedia. There is a page with tables for each season and I can use that as the base URL for scraping. 
+
+Packages used in this first episode:
+
+- Tidyverse, obviously. This is always the first package I load. 
+- Janitor, which has a couple of functions I like to use, especially clean_names() to clean and remove special characters from column names in new datasets. 
+- Rvest, which can be used to scrape data from websites. 
+- Googlesheets4, which is an update of the original googlesheets package. I can use this to store my data because I have more than one computer I use on a regular basis.  
+- Extrafont (pretty self-explanatory).
+- Ggiraph for graph animation.
+
+Now, on to the X-Files.
+
+```{r}
+wiki <- "https://en.wikipedia.org/wiki/List_of_The_X-Files_episodes"
+```
+
+To find out what selector you need to look at the tables of interest, you can use a Chrome extension called SelectorGadget, or you can just right click on the specific spot on a website and choose "inspect" in the dropdown menu that comes up - which is what I usually do.
+
+In this case it's pretty easy, the html nodes I'm interested in are simply "table" class. At first glance, it looks like tables 2 through 14 are "wiki episode table". That's one more than I would expect, because there are nine original seasons, and then two follow-up seasons that came out more recently (10-11). However, there are also two X-Files movies, which appear to have separate tables. I don't want to deal with those right now really, so I will leave them out when I scrape the tables. 
+
+```{r}
+wiki %>% 
+  read_html() %>% 
+  html_nodes(., "table")
+```
+
+So before we get the tables, I'm just going to select the nodes I actually want to collect, then use html_table to gather them all in table format.
+
+```{r}
+tables <- wiki %>% 
+  read_html() %>% 
+  html_nodes(., "table") %>% 
+  .[c(2:6, 8:11, 13:14)] %>% 
+  html_table(fill = TRUE)
+```
+
+I won't show all the tables just for the sake of space, but here is the first one. It looks like the "prod code" column is going to cause issues when I try and map them to one dataframe, because in some cases there are hyperlinks which results in inconsistent column names. (Hint: the table is interactive so you can flip over to the other columns or down to the next page). 
+
+```{r}
+tables[[1]]
+```
+
+I'm going to add names to this list of dataframes before I clean the column names.
+
+```{r}
+names(tables) <- rep(paste0("Season ", 1:11))
+```
+
+Now to get the column names. They are all the same aside from the issue I mentioned earlier. 
+```{r}
+names(tables[[1]] %>% clean_names())
+```
+
+
