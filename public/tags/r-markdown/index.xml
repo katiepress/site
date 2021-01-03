@@ -6,16 +6,7 @@
     <description>Recent content in R Markdown on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 02 Jan 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.katiepress.com/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>The Truth Is Out There</title>
-      <link>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there/</link>
-      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
-      
-      <guid>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there/</guid>
-      <description>I’m a huge X-Files fan. I also love working with text data. I’ve had an idea floating around for a while to do a tidy text analysis on X-Files episode scripts. The X-Files has been around long enough that there are tons of fandom sites, and you can easily find transcripts of the original 9 seasons.First, I wanted to get some basic information about the episodes, so that’s what this post will focus on.</description>
-    </item>
-    
+    <lastBuildDate>Fri, 01 Jan 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.katiepress.com/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test Post 3</title>
       <link>https://www.katiepress.com/blog/2021-01-03-test-post-3/</link>

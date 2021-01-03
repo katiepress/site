@@ -73,6 +73,11 @@
   </url>
   
   <url>
+    <loc>https://www.katiepress.com/tags/datasets/</loc>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.katiepress.com/</loc>
     <lastmod>2021-01-02T21:13:14-05:00</lastmod>
     <xhtml:link
@@ -128,22 +133,7 @@
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/plot/</loc>
-    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.katiepress.com/categories/r/</loc>
-    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/r-markdown/</loc>
-    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/regression/</loc>
     <lastmod>2021-01-02T21:13:14-05:00</lastmod>
   </url>
   
@@ -208,8 +198,138 @@
   </url>
   
   <url>
+    <loc>https://www.katiepress.com/tags/web-scraping/</loc>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/categories/x-files/</loc>
+    <lastmod>2021-01-02T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/plot/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/r-markdown/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/regression/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.katiepress.com/blog/2021-01-03-test-post-3/</loc>
     <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/css/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/css/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/css/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/html/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/html/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/html/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/markdown/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/markdown/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/markdown/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/blog/markdown-syntax/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/blog/markdown-syntax/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/blog/markdown-syntax/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/categories/syntax/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/categories/syntax/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/categories/syntax/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/themes/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/themes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/themes/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/categories/themes/</loc>
+    <lastmod>2020-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/categories/themes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/categories/themes/"
+                />
   </url>
   
   <url>
@@ -254,21 +374,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://www.katiepress.com/tags/shortcodes/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/markdown/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://www.katiepress.com/fr/tags/markdown/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.katiepress.com/tags/markdown/"
                 />
   </url>
   

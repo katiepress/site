@@ -8,9 +8,27 @@
     <language>en</language>
     <lastBuildDate>Sat, 02 Jan 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.katiepress.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Datasets</title>
+      <link>https://www.katiepress.com/tags/datasets/</link>
+      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.katiepress.com/tags/datasets/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web Scraping</title>
+      <link>https://www.katiepress.com/tags/web-scraping/</link>
+      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.katiepress.com/tags/web-scraping/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>plot</title>
       <link>https://www.katiepress.com/tags/plot/</link>
-      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
+      <pubDate>Fri, 01 Jan 2021 21:13:14 -0500</pubDate>
       
       <guid>https://www.katiepress.com/tags/plot/</guid>
       <description></description>
@@ -19,7 +37,7 @@
     <item>
       <title>R Markdown</title>
       <link>https://www.katiepress.com/tags/r-markdown/</link>
-      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
+      <pubDate>Fri, 01 Jan 2021 21:13:14 -0500</pubDate>
       
       <guid>https://www.katiepress.com/tags/r-markdown/</guid>
       <description></description>
@@ -28,9 +46,45 @@
     <item>
       <title>regression</title>
       <link>https://www.katiepress.com/tags/regression/</link>
-      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
+      <pubDate>Fri, 01 Jan 2021 21:13:14 -0500</pubDate>
       
       <guid>https://www.katiepress.com/tags/regression/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>css</title>
+      <link>https://www.katiepress.com/tags/css/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.katiepress.com/tags/css/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>html</title>
+      <link>https://www.katiepress.com/tags/html/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.katiepress.com/tags/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>markdown</title>
+      <link>https://www.katiepress.com/tags/markdown/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.katiepress.com/tags/markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>themes</title>
+      <link>https://www.katiepress.com/tags/themes/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.katiepress.com/tags/themes/</guid>
       <description></description>
     </item>
     
@@ -49,15 +103,6 @@
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://www.katiepress.com/tags/shortcodes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>markdown</title>
-      <link>https://www.katiepress.com/tags/markdown/</link>
-      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.katiepress.com/tags/markdown/</guid>
       <description></description>
     </item>
     

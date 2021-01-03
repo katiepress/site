@@ -75,16 +75,46 @@
   <url>
     <loc>https://www.katiepress.com/fr/tags/css/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/css/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/css/"
+                />
   </url>
   
   <url>
     <loc>https://www.katiepress.com/fr/blog/markdown-syntax/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/blog/markdown-syntax/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/blog/markdown-syntax/"
+                />
   </url>
   
   <url>
     <loc>https://www.katiepress.com/fr/tags/html/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/html/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/html/"
+                />
   </url>
   
   <url>
@@ -160,6 +190,16 @@
   <url>
     <loc>https://www.katiepress.com/fr/categories/syntax/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/categories/syntax/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/categories/syntax/"
+                />
   </url>
   
   <url>
@@ -220,11 +260,31 @@
   <url>
     <loc>https://www.katiepress.com/fr/tags/themes/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/themes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/themes/"
+                />
   </url>
   
   <url>
     <loc>https://www.katiepress.com/fr/categories/themes/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/categories/themes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/categories/themes/"
+                />
   </url>
   
   <url>
