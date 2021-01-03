@@ -1,7 +1,7 @@
 ---
-title: "The Truth is Out There"
+title: "The Truth is Out There 2"
 author: "Katie Press"
-description: "Creating an X-Files episode dataset using web scraping."
+description: "Creating an X-Files episode dataset using web scraping 2."
 categories: ["R", "syntax"]
 tags: ["rmarkdown", "css"]
 date: "2021-01-01"
