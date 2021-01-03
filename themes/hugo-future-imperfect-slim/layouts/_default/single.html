@@ -1,9 +1,9 @@
 {{ define "main" }}
   <article class="post">
     {{ .Render "header" }}
-    <div id="socnet-share">
+ <!--   <div id="socnet-share"> Deleted the social share buttons from article text
       {{ partial "share-buttons" . }}
-    </div>
+    </div>  -->
     <div class="content">
       {{ .Render "featured" }}
       {{ .Content }}

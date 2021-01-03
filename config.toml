@@ -23,12 +23,12 @@ ignoreFiles=["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.
   jsFiles               = ["default"]
   highlightjs           = true
   highlightjsTheme      = "tomorrow-night"
-  highlightjsLang       = ["R"]
+  highlightjsLang       = ["r"]
   viewMorePostsLink     = "/blog/"
   readingTime           = false
   imageStretch          = ""
   removeBlur            = false
-  socialShare           = []
+  socialShare           = ["twitter", "linkedin", "email"]
   hideEmptyStats        = false
 
   [params.meta]
