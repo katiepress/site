@@ -6,11 +6,21 @@
     <description>Recent content in Web Scraping on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 02 Jan 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.katiepress.com/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 01 Nov 2020 21:13:14 -0500</lastBuildDate><atom:link href="https://www.katiepress.com/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Trust No One</title>
+      <link>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there-part-ii/</link>
+      <pubDate>Sun, 01 Nov 2020 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there-part-ii/</guid>
+      <description>In the last “episode” I created a dataset of X-Files episodes using web scraping. The simple episode descriptions are not going to give me the depth of information I need for a real text analysis, so it’s time to get some more data!
+Many of the X-Files episode transcripts are available online, so I found a website I could use to scrape most of the text I need. First, I’m going to create a list of episode links that I can use to download the transcripts.</description>
+    </item>
+    
     <item>
       <title>The Truth Is Out There</title>
       <link>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there/</link>
-      <pubDate>Sat, 02 Jan 2021 21:13:14 -0500</pubDate>
+      <pubDate>Sun, 04 Oct 2020 21:13:14 -0500</pubDate>
       
       <guid>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there/</guid>
       <description>I’ve had an idea floating around for a while to do a tidy text analysis on X-Files episode scripts. The X-Files has been around long enough that there are tons of fandom sites, and you can easily find transcripts of the original 9 seasons.First, I wanted to get some basic information about the episodes, so that’s what this post will focus on. My first thought was to go to Wikipedia.</description>

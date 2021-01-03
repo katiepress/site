@@ -2,7 +2,7 @@
 title: The Truth Is Out There
 author: "Katie Press"
 description: "Creating an X-Files episode dataset using web scraping."
-date: 2021-01-02T21:13:14-05:00
+date: 2020-10-04T21:13:14-05:00
 categories: ["R", "X-Files"]
 tags: ["Web Scraping", "Datasets"]
 images:
