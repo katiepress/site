@@ -6,25 +6,7 @@
     <description>Recent content in Blog on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 01 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.katiepress.com/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>The Truth is Out There</title>
-      <link>https://www.katiepress.com/blog/test_post/</link>
-      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.katiepress.com/blog/test_post/</guid>
-      <description>I’m a huge X-Files fan. I also love working with text data. I’ve had an idea floating around for a while to do a tidy text analysis on X-Files episode scripts. The X-Files has been around long enough that there are tons of fandom sites, and you can easily find transcripts of the original 9 seasons.First, I wanted to get some basic information about the episodes, so that’s what this post will focus on.</description>
-    </item>
-    
-    <item>
-      <title>The Truth is Out There 2</title>
-      <link>https://www.katiepress.com/blog/2015-07-23-r-rmarkdown/test_post2/</link>
-      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.katiepress.com/blog/2015-07-23-r-rmarkdown/test_post2/</guid>
-      <description>I’m a huge X-Files fan. I also love working with text data. I’ve had an idea floating around for a while to do a tidy text analysis on X-Files episode scripts. The X-Files has been around long enough that there are tons of fandom sites, and you can easily find transcripts of the original 9 seasons.First, I wanted to get some basic information about the episodes, so that’s what this post will focus on.</description>
-    </item>
-    
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://www.katiepress.com/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Markdown Syntax Guide</title>
       <link>https://www.katiepress.com/blog/markdown-syntax/</link>
