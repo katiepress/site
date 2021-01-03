@@ -46,11 +46,11 @@ wiki <- "https://en.wikipedia.org/wiki/List_of_The_X-Files_episodes"
 To find out what selector you need to look at the tables of interest, you can use a Chrome extension called SelectorGadget, or you can just right click on the specific spot on a website and choose "inspect" in the dropdown menu that comes up - which is what I usually do.
 
 
-![](/img/2021/thetruth1_screenshot1.png){width=600px height=400px}
+![](/blog/test_post_files/thetruth1_screenshot1.png){width=600px height=400px}
 
 In this case it's pretty easy, the html nodes I'm interested in are simply "table" class. 
 
-![](/img/2021/thetruth1_screenshot2.png){width=600px height=400px}
+![](/blog/test_post_files/thetruth1_screenshot2.png){width=600px height=400px}
 
 At first glance, it looks like tables 2 through 14 are "wiki episode table". That's one more than I would expect, because there are nine original seasons, and then two follow-up seasons that came out more recently (10-11). However, there are also two X-Files movies, which appear to have separate tables. I don't want to deal with those right now really, so I will leave them out when I scrape the tables. 
 
