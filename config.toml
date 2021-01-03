@@ -5,7 +5,7 @@ DefaultContentLanguage  = "en"
 title                   = "Kpress R Blog"
 theme                   = "hugo-future-imperfect-slim"
 paginate                = 3
-disqusShortname         = ""
+disqusShortname         = "blog-zxbl2vcnni"
 googleAnalytics         = ""
 pluralizeListTitles     = false
 disableLanguages        = []
@@ -25,10 +25,10 @@ ignoreFiles=["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.
   highlightjsTheme      = "tomorrow-night"
   highlightjsLang       = ["R"]
   viewMorePostsLink     = "/blog/"
-  readingTime           = true
+  readingTime           = false
   imageStretch          = ""
   removeBlur            = false
-  socialShare           = ["twitter", "linkedin", "email"]
+  socialShare           = []
   hideEmptyStats        = false
 
   [params.meta]
@@ -41,7 +41,7 @@ ignoreFiles=["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.
     iOSColor            = "#ffffff"
 
   [params.header]
-    navbarTitle         = "<img src='/img/main/kpress_squarelogo.svg'>"
+    navbarTitle         = "<img src='/img/main/white_logo.svg'>"
     dynamicTitles       = false
     searchMenu          = true
     shareMenu           = true

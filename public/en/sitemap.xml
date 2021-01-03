@@ -208,26 +208,6 @@
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/plot/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/r-markdown/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/regression/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/blog/2021-01-03-test-post-3/</loc>
-    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.katiepress.com/tags/css/</loc>
     <lastmod>2020-03-11T00:00:00+00:00</lastmod>
     <xhtml:link
@@ -444,6 +424,21 @@
   
   <url>
     <loc>https://www.katiepress.com/blog/2015-07-23-r-rmarkdown/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/plot/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/r-markdown/</loc>
+    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/regression/</loc>
     <lastmod>2015-07-23T21:13:14-05:00</lastmod>
   </url>
   

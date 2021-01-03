@@ -3,6 +3,7 @@ title: "Test Post 3"
 author: "Katie Press"
 date: 2021-01-01T21:13:14-05:00
 categories: ["R"]
+draft: true
 tags: ["R Markdown", "plot", "regression"]
 output: 
   blogdown::html_page: 

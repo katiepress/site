@@ -262,5 +262,5 @@ girafe(
 saveRDS(table_df, "./table_df.RDS")
 ```
 
-In the next episode I will be webscraping episode scripts to use in text analysis.
+Don't forget to hover over the graph to check out the pop-ups! In the next episode I will be web scraping episode scripts to use in text analysis.
 
