@@ -236,7 +236,7 @@ my_theme <- theme(legend.position = "none",
 Now I can plot the episodes by season and rating. The ggiraph package has a function that will add tooltips to a regular R plot, so I've added the episode number and title and it will pop up as your mouse hovers over each point. I put some additional theme formatting in my_theme that I'm not showing here due to space. 
 
 ```{r}
-p <- table_df %>%
+p <- table_df %>% 
   filter(!is.na(rating)) %>%
   ggplot(aes(rating, fct_rev(season), color = season)) +
   geom_point_interactive(aes(tooltip = full_title, data_id = no_overall),
