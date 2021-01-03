@@ -4,6 +4,7 @@ author: "Katie Press"
 description: "Creating an X-Files episode dataset using web scraping 2."
 categories: ["R", "syntax"]
 tags: ["rmarkdown", "css"]
+type: "post"
 date: "2021-01-01"
 images:
 - alt: X Files Chart 1
