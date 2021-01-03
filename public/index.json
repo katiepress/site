@@ -1,4 +1,10 @@
 [{
+    "title": "Test Post 3",
+    "date": "",
+    "description": "",
+    "body": " A Test\ndata(cars) head(cars) ## speed dist ## 1 4 2 ## 2 4 10 ## 3 7 4 ## 4 7 22 ## 5 8 16 ## 6 9 10 ",
+    "ref": "/blog/2021-01-03-test-post-3/"
+  },{
     "title": "Rich Content",
     "date": "",
     "description": "A brief description of Hugo Shortcodes",

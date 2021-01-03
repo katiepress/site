@@ -4,7 +4,7 @@
   
   <url>
     <loc>https://www.katiepress.com/blog/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -18,8 +18,63 @@
   </url>
   
   <url>
+    <loc>https://www.katiepress.com/categories/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pl"
+                href="https://www.katiepress.com/pl/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://www.katiepress.com/pt/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="de"
+                href="https://www.katiepress.com/de/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="es"
+                href="https://www.katiepress.com/es/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://www.katiepress.com/zh-cn/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://www.katiepress.com/zh-tw/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="https://www.katiepress.com/ja/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="nl"
+                href="https://www.katiepress.com/nl/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/categories/"
+                />
+  </url>
+  
+  <url>
     <loc>https://www.katiepress.com/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -73,53 +128,28 @@
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/privacy/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://www.katiepress.com/fr/tags/privacy/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.katiepress.com/tags/privacy/"
-                />
+    <loc>https://www.katiepress.com/tags/plot/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/blog/rich-content/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://www.katiepress.com/fr/blog/rich-content/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.katiepress.com/blog/rich-content/"
-                />
+    <loc>https://www.katiepress.com/categories/r/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/shortcodes/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://www.katiepress.com/fr/tags/shortcodes/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.katiepress.com/tags/shortcodes/"
-                />
+    <loc>https://www.katiepress.com/tags/r-markdown/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/regression/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.katiepress.com/tags/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -169,6 +199,56 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://www.katiepress.com/tags/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/blog/2021-01-03-test-post-3/</loc>
+    <lastmod>2021-01-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/privacy/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/privacy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/privacy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/blog/rich-content/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/blog/rich-content/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/blog/rich-content/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://www.katiepress.com/tags/shortcodes/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://www.katiepress.com/fr/tags/shortcodes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.katiepress.com/tags/shortcodes/"
                 />
   </url>
   
@@ -253,82 +333,7 @@
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/categories/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://www.katiepress.com/fr/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pl"
-                href="https://www.katiepress.com/pl/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://www.katiepress.com/pt/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="de"
-                href="https://www.katiepress.com/de/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="es"
-                href="https://www.katiepress.com/es/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://www.katiepress.com/zh-cn/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://www.katiepress.com/zh-tw/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="https://www.katiepress.com/ja/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="nl"
-                href="https://www.katiepress.com/nl/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.katiepress.com/categories/"
-                />
-  </url>
-  
-  <url>
     <loc>https://www.katiepress.com/blog/2015-07-23-r-rmarkdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/plot/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/categories/r/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/tags/regression/</loc>
     <lastmod>2015-07-23T21:13:14-05:00</lastmod>
   </url>
   
