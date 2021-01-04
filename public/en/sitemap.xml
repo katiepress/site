@@ -3,251 +3,266 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://www.katiepress.com/blog/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/blog/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/categories/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/categories/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://www.katiepress.com/fr/categories/"
+                href="https://www.kpress.dev/fr/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
-                href="https://www.katiepress.com/pl/categories/"
+                href="https://www.kpress.dev/pl/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://www.katiepress.com/pt/categories/"
+                href="https://www.kpress.dev/pt/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://www.katiepress.com/de/categories/"
+                href="https://www.kpress.dev/de/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="es"
-                href="https://www.katiepress.com/es/categories/"
+                href="https://www.kpress.dev/es/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://www.katiepress.com/zh-cn/categories/"
+                href="https://www.kpress.dev/zh-cn/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://www.katiepress.com/zh-tw/categories/"
+                href="https://www.kpress.dev/zh-tw/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://www.katiepress.com/ja/categories/"
+                href="https://www.kpress.dev/ja/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="nl"
-                href="https://www.katiepress.com/nl/categories/"
+                href="https://www.kpress.dev/nl/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.katiepress.com/categories/"
+                href="https://www.kpress.dev/categories/"
                 />
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/datasets/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/tags/charts/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there-part-ii/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.katiepress.com/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://www.katiepress.com/fr/"
+                href="https://www.kpress.dev/fr/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
-                href="https://www.katiepress.com/pl/"
+                href="https://www.kpress.dev/pl/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://www.katiepress.com/pt/"
+                href="https://www.kpress.dev/pt/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://www.katiepress.com/de/"
+                href="https://www.kpress.dev/de/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="es"
-                href="https://www.katiepress.com/es/"
+                href="https://www.kpress.dev/es/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://www.katiepress.com/zh-cn/"
+                href="https://www.kpress.dev/zh-cn/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://www.katiepress.com/zh-tw/"
+                href="https://www.kpress.dev/zh-tw/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://www.katiepress.com/ja/"
+                href="https://www.kpress.dev/ja/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="nl"
-                href="https://www.katiepress.com/nl/"
+                href="https://www.kpress.dev/nl/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.katiepress.com/"
+                href="https://www.kpress.dev/"
                 />
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/categories/r/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/categories/r/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/</loc>
-    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/tags/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://www.katiepress.com/fr/tags/"
+                href="https://www.kpress.dev/fr/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
-                href="https://www.katiepress.com/pl/tags/"
+                href="https://www.kpress.dev/pl/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://www.katiepress.com/pt/tags/"
+                href="https://www.kpress.dev/pt/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://www.katiepress.com/de/tags/"
+                href="https://www.kpress.dev/de/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="es"
-                href="https://www.katiepress.com/es/tags/"
+                href="https://www.kpress.dev/es/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://www.katiepress.com/zh-cn/tags/"
+                href="https://www.kpress.dev/zh-cn/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://www.katiepress.com/zh-tw/tags/"
+                href="https://www.kpress.dev/zh-tw/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://www.katiepress.com/ja/tags/"
+                href="https://www.kpress.dev/ja/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="nl"
-                href="https://www.katiepress.com/nl/tags/"
+                href="https://www.kpress.dev/nl/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.katiepress.com/tags/"
+                href="https://www.kpress.dev/tags/"
                 />
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/tags/web-scraping/</loc>
+    <loc>https://www.kpress.dev/tags/text-analysis/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kpress.dev/blog/2021-01-03-trust-no-one/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kpress.dev/categories/x-files/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kpress.dev/tags/datasets/</loc>
     <lastmod>2020-11-01T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/categories/x-files/</loc>
+    <loc>https://www.kpress.dev/blog/2021-01-03-the-truth-is-out-there-part-ii/</loc>
     <lastmod>2020-11-01T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/blog/2021-01-03-the-truth-is-out-there/</loc>
+    <loc>https://www.kpress.dev/tags/web-scraping/</loc>
+    <lastmod>2020-11-01T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kpress.dev/blog/2021-01-03-the-truth-is-out-there/</loc>
     <lastmod>2020-10-04T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/about/</loc>
+    <loc>https://www.kpress.dev/about/</loc>
     <lastmod>2019-02-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pl"
-                href="https://www.katiepress.com/pl/about/"
+                href="https://www.kpress.dev/pl/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://www.katiepress.com/fr/about/"
+                href="https://www.kpress.dev/fr/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
-                href="https://www.katiepress.com/pt/about/"
+                href="https://www.kpress.dev/pt/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.katiepress.com/about/"
+                href="https://www.kpress.dev/about/"
                 />
   </url>
   
   <url>
-    <loc>https://www.katiepress.com/contact/</loc>
+    <loc>https://www.kpress.dev/contact/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://www.katiepress.com/de/contact/"
+                href="https://www.kpress.dev/de/contact/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="es"
-                href="https://www.katiepress.com/es/contact/"
+                href="https://www.kpress.dev/es/contact/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://www.katiepress.com/zh-cn/contact/"
+                href="https://www.kpress.dev/zh-cn/contact/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.katiepress.com/contact/"
+                href="https://www.kpress.dev/contact/"
                 />
   </url>
   

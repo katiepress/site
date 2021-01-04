@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Kpress R Blog</title>
-    <link>https://www.katiepress.com/ja/categories/</link>
+    <link>https://www.kpress.dev/ja/categories/</link>
     <description>Recent content in Categories on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>ja</language><atom:link href="https://www.katiepress.com/ja/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>ja</language><atom:link href="https://www.kpress.dev/ja/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Kpress R Blog</title>
-    <link>https://www.katiepress.com/zh-cn/tags/</link>
+    <link>https://www.kpress.dev/zh-cn/tags/</link>
     <description>Recent content in Tags on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language><atom:link href="https://www.katiepress.com/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh-CN</language><atom:link href="https://www.kpress.dev/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

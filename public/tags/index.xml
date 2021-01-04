@@ -2,26 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Kpress R Blog</title>
-    <link>https://www.katiepress.com/tags/</link>
+    <link>https://www.kpress.dev/tags/</link>
     <description>Recent content in Tags on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 01 Nov 2020 21:13:14 -0500</lastBuildDate><atom:link href="https://www.katiepress.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Jan 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.kpress.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Charts</title>
+      <link>https://www.kpress.dev/tags/charts/</link>
+      <pubDate>Sun, 03 Jan 2021 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.kpress.dev/tags/charts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Text Analysis</title>
+      <link>https://www.kpress.dev/tags/text-analysis/</link>
+      <pubDate>Sun, 03 Jan 2021 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.kpress.dev/tags/text-analysis/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Datasets</title>
-      <link>https://www.katiepress.com/tags/datasets/</link>
+      <link>https://www.kpress.dev/tags/datasets/</link>
       <pubDate>Sun, 01 Nov 2020 21:13:14 -0500</pubDate>
       
-      <guid>https://www.katiepress.com/tags/datasets/</guid>
+      <guid>https://www.kpress.dev/tags/datasets/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Web Scraping</title>
-      <link>https://www.katiepress.com/tags/web-scraping/</link>
+      <link>https://www.kpress.dev/tags/web-scraping/</link>
       <pubDate>Sun, 01 Nov 2020 21:13:14 -0500</pubDate>
       
-      <guid>https://www.katiepress.com/tags/web-scraping/</guid>
+      <guid>https://www.kpress.dev/tags/web-scraping/</guid>
       <description></description>
     </item>
     

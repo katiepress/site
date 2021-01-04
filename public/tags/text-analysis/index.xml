@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Text Analysis on Kpress R Blog</title>
+    <link>https://www.kpress.dev/tags/text-analysis/</link>
+    <description>Recent content in Text Analysis on Kpress R Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 03 Jan 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.kpress.dev/tags/text-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Trust No One</title>
+      <link>https://www.kpress.dev/blog/2021-01-03-trust-no-one/</link>
+      <pubDate>Sun, 03 Jan 2021 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.kpress.dev/blog/2021-01-03-trust-no-one/</guid>
+      <description>In the last two episodes, I created an X-Files episode dataset and web-scraped episode scripts. Now it’s time for some real text analysis. Most of this is going to be based on Julia Silge’s work on tidy text mining, which can be found in her free eBook. And of course, all of this is based on the principles of tidy data - see this paper by tidyverse author Hadley Wickham for more details.</description>
+    </item>
+    
+  </channel>
+</rss>

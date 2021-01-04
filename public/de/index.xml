@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kpress R Blog</title>
-    <link>https://www.katiepress.com/de/</link>
+    <link>https://www.kpress.dev/de/</link>
     <description>Recent content on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>de</language><atom:link href="https://www.katiepress.com/de/index.xml" rel="self" type="application/rss+xml" />
+    <language>de</language><atom:link href="https://www.kpress.dev/de/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kontakt</title>
-      <link>https://www.katiepress.com/de/contact/</link>
+      <link>https://www.kpress.dev/de/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://www.katiepress.com/de/contact/</guid>
+      <guid>https://www.kpress.dev/de/contact/</guid>
       <description></description>
     </item>
     

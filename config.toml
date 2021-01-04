@@ -1,6 +1,6 @@
 # For a description of these parameters, please visit the theme wiki.
 # https://github.com/pacollins/hugo-future-imperfect-slim/wiki/config.toml
-baseurl                 = "https://www.katiepress.com/"
+baseurl                 = "https://www.kpress.dev/"
 DefaultContentLanguage  = "en"
 title                   = "Kpress R Blog"
 theme                   = "hugo-future-imperfect-slim"
