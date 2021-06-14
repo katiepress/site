@@ -1,13 +1,13 @@
 ---
-title: "Test Post 3"
+title: "Fight The Future: Stock Forecasting with Prophet"
 author: "Katie Press"
-date: 2021-01-01T21:13:14-05:00
-categories: ["R"]
-draft: true
-tags: ["R Markdown", "plot", "regression"]
+date: 2021-06-13T21:13:14-05:00
+categories: ["R", "Stocks"]
+draft: false
+tags: ["plot", "stocks", "forecasting"]
 images:
-- alt: X Files Chart 2
-  src: img/2021/thetruth_part2_plot2.png
+- alt: BB Prophet Prediction
+  src: img/2021/bbstock.png
   stretch: horizontal
 output: 
   blogdown::html_page: 
@@ -15,27 +15,260 @@ output:
     df_print: paged
 ---
 
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
 <link href="{{< blogdown/postref >}}index.en_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
 <script src="{{< blogdown/postref >}}index.en_files/pagedtable/js/pagedtable.js"></script>
 
 
-<p>A Test</p>
-<pre class="r"><code>ep_text &lt;- readRDS(&quot;~/Desktop/site/content/blog/2021-01-03-the-truth-is-out-there-part-ii/ep_text.RDS&quot;)</code></pre>
-<pre class="r"><code>speakers &lt;- ep_text %&gt;% 
-  count(season, speaker) %&gt;% 
-  filter(speaker %in% c(&quot;Mulder&quot;, &quot;Scully&quot;, &quot;Skinner&quot;, &quot;Cigarette Smoking Man&quot;, &quot;Frohike&quot;, &quot;Langly&quot;, &quot;Doggett&quot;, &quot;Byers&quot;,  &quot;X&quot;, &quot;Deep Throat&quot;, &quot;Well-Manicured Man&quot;)) %&gt;% 
-  arrange(season, desc(n))
+<div id="background-and-disclaimer" class="section level2">
+<h2>Background and Disclaimer</h2>
+<p>This post (unfortunately) has nothing to do with the X-Files 1998 movie “Fight the Future” but I couldn’t resist using the title.</p>
+<p>Facebook created a forecasting package for R and Python called Prophet. I’ve seen quite a few tutorials and examples for Prophet in Python but not many for R. Documentation can be found <a href="https://facebook.github.io/prophet/">here</a> for both languages.</p>
+<p>From the description:</p>
+<p>“Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is robust to missing data and shifts in the trend, and typically handles outliers well.”</p>
+<p>Disclaimer: This blog post is NOT intended as investment advice. The charts and analyses contained within this post are provided to illustrate the functions of the prophet package and to share my personal opinions on stocks.</p>
+</div>
+<div id="getting-data" class="section level2">
+<h2>Getting Data</h2>
+<p>First, using the package BatchGetSymbols to get the stocks I’m interested in.</p>
+<pre class="r"><code>stocks &lt;- BatchGetSymbols(
+  c(&quot;BB&quot;, &quot;CLX&quot;,
+    &quot;UAVS&quot;, &quot;TLRY&quot;,
+    &quot;ENG&quot;, &quot;SPCE&quot;, &quot;MNMD&quot;),
+  first.date = today() %m-% years(4),
+  last.date = today(),
+  thresh.bad.data = .1
+)$df.tickers
 
-speakers&lt;-speakers %&gt;% 
-  mutate(n2 = round(log(n), 2),
-         speaker2 = factor(speaker)) %&gt;% 
-  mutate(n2 = ifelse(n2 &lt;.5,.3, n2))</code></pre>
-<pre class="r"><code>speakers %&gt;% 
-  ggplot(aes(fct_rev(speaker2), n2,fill =speaker2)) +
-  geom_col(show.legend = FALSE, width = .8, position = position_dodge(0.7))+
-  facet_wrap(~season, nrow = 3)+
-  scale_y_continuous(limits = c(0,8), expand = c(0,0))+
-  coord_flip()+
-  labs(title = &quot;Character Lines by Season&quot;, y = &quot;Number of Lines&quot;)+
-  my_theme2</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="720" /></p>
+stocks &lt;- stocks %&gt;% clean_names()</code></pre>
+</div>
+<div id="forecasting-with-prophet" class="section level2">
+<h2>Forecasting with prophet</h2>
+<p>For the forecasting exercise, I’m going to start with BB. I’m interested to see what the prophet model will do with sudden price increases, and BB seemed like the more reasonable way to test this, as opposed to GME where we have a $300+ increase. The tidyquant package has a geom_candlestick chart function for ggplot, which is what I’m using here.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div id="getting-started" class="section level3">
+<h3>Getting Started</h3>
+<p>Steps:</p>
+<ol style="list-style-type: decimal">
+<li>Select a ticker from the batch symbols dataframe and rename the columns to correspond to prophet’s expected inputs (ds and y).</li>
+<li>Get a dataframe of U.S. holidays using prophet’s built-in holiday dataset.</li>
+<li>Create a training dataset to fit the model using historical data, and a test dataset of more recent data to test the results.</li>
+<li>Fit the prophet model to the training dataset</li>
+<li>Make a future dataframe for the prediction and exclude weekends (Saturday is day 7 and Sunday is day 1 using wday from lubridate)</li>
+<li>Use generic R “predict” function to predict the closing price</li>
+</ol>
+<p>Note: both the prophet and predict functions might take a minute to run, this depends partly on your computer and partly on the amount of data you’re using to create the models. On my Windows laptop that I used to use for work, this would take quite a while. With my new M1 Macbook Pro it only takes a few seconds.</p>
+<pre class="r"><code>data(&quot;generated_holidays&quot;)
+
+generated_holidays &lt;- generated_holidays %&gt;% 
+  filter(country == &quot;US&quot;)</code></pre>
+<pre class="r"><code>df_train &lt;- stocks %&gt;%
+  filter(ticker == &quot;BB&quot;, ref_date &lt; &quot;2021-03-01&quot;) %&gt;%
+  select(&quot;ds&quot; = ref_date, &quot;y&quot; = price_close)
+
+df_test &lt;- stocks %&gt;%
+  filter(ticker == &quot;BB&quot;, ref_date &gt;= &quot;2021-03-01&quot;) %&gt;%
+  select(&quot;ds&quot; = ref_date, &quot;y&quot; = price_close)
+
+m &lt;- prophet(holidays = generated_holidays)
+m &lt;- fit.prophet(m, df_train)
+
+future &lt;- make_future_dataframe(m, periods = 120)
+
+future &lt;- future %&gt;%
+  mutate(week_day = wday(ds)) %&gt;%
+  filter(between(week_day, 2, 6))
+
+forecast &lt;- predict(m, future)
+
+test &lt;- plot(m, forecast)</code></pre>
+</div>
+<div id="initial-results" class="section level3">
+<h3>Initial Results</h3>
+<p>Now I can plot the result. The blue line represents the predicted values, and the light blue shaded areas represent the uncertainty of the predicted model. The pink dots represent the actual closing price of the stock.</p>
+<p>Note that it doesn’t come close to predicting $25 back in January (and I didn’t expect it to).</p>
+<pre class="r"><code>test +
+  labs(title = &quot;BB Prophet Model&quot;, 
+       subtitle = &quot;120-Day Prediction&quot;,
+       y = &quot;Closing Price&quot;, x = &quot;&quot;) +
+  my_theme</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="training-vs.-test-data" class="section level3">
+<h3>Training vs. Test Data</h3>
+<p>Now using the training dataset which includes the most recent data (March 2021-current), I can compare the model’s prediction to the actual price movement (represented by the purple dots).</p>
+<pre class="r"><code>forecast %&gt;%
+  ggplot(aes(x = as.Date(ds), y = yhat)) +
+  geom_line(col = pal.9[6], size = 1.1) +
+  geom_point(data = df_train, aes(x = ds, y = y), col = pal.9[9]) +
+  geom_point(data = df_test, aes(x = ds, y = y), col = pal.9[8]) +
+  labs(
+    title = &quot;BB Prophet Model vs. Test Data&quot;,
+    subtitle = &quot;120 Day Prediction&quot;,
+    y = &quot;Closing Price&quot;,
+    x = &quot;&quot;
+  ) +
+  my_theme</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="increasing-model-flexibility" class="section level3">
+<h3>Increasing Model Flexibility</h3>
+<p>It looks like I need to increase the flexibility of the forecast, and maybe that would help me get a higher prediction in both January and June (closer to the actual price). I think this result is quite interesting. It predicted the second increase almost exactly, but it still doesn’t account for the large dip before the stock shot up to $15 again. Historically though, it predicted downtrends just fine.</p>
+<pre class="r"><code>m2 &lt;- prophet(df_train, changepoint.prior.scale = 0.5, holidays = generated_holidays)
+forecast2 &lt;- predict(m2, future)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="one-year-prediction" class="section level2">
+<h2>One Year Prediction</h2>
+<p>Now that I know it (kind of) works, I will predict for the next year, keeping the increase in model flexibility as seen in the last chart. Note that increasing the flexibility also means increasing uncertainty, and I’m not sure how that will play out on a longer time frame.</p>
+<pre class="r"><code>df &lt;- stocks %&gt;% 
+  filter(ticker == &quot;BB&quot;) %&gt;% 
+  select(&quot;ds&quot; = ref_date, &quot;y&quot; = price_close)
+
+m3 &lt;- prophet(df, changepoint.prior.scale = 0.5, holidays = generated_holidays)
+
+future3 &lt;- make_future_dataframe(m3, periods = 365)
+
+future3 &lt;- future3 %&gt;% 
+  mutate(week_day = wday(ds)) %&gt;% 
+  filter(between(week_day, 2,6))
+
+forecast3 &lt;- predict(m3, future3)
+
+test2 &lt;- plot(m3, forecast3)</code></pre>
+<p>Very interesting, with the longer timeframe for future prediction it looks like increasing the flexibility of the model is not that helpful. For one thing it doesn’t predict the current price as accurately as the previous (shorter) prediction. It also increases the uncertainty to the point where the prediction isn’t really useful. It’s like saying “by this time next year, the closing price of BB will be between -$10 and $50”.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div id="decrease-model-flexibility" class="section level3">
+<h3>Decrease Model Flexibility</h3>
+<p>What would it look like if I went back to the default flexibility? The resulting prediction still has BB trading around $20 per share, but the uncertainty is much lower, and there’s a pretty clear uptrend.</p>
+<pre class="r"><code>m4 &lt;- prophet(df, holidays = generated_holidays)
+
+forecast4 &lt;- predict(m4, future3)
+
+test3 &lt;- plot(m4, forecast4)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="adding-google-trend-data" class="section level3">
+<h3>Adding Google Trend Data</h3>
+<p>I wondered if there was something else I could do to increase the accuracy of the predictive model. I noticed in the <a href="https://facebook.github.io/prophet/docs/seasonality,_holiday_effects,_and_regressors.html#additional-regressors">prophet documentation</a> that you can use additional regressors in the model. The first thing I thought of was to mine the wallstreetbets reddit data and do a text analysis of sentiment over time. But I don’t really have time right now, so I decided to use some Google trend data on hits using BB as the keyword.</p>
+<p>Steps:</p>
+<ol style="list-style-type: decimal">
+<li>Get the Google trend data, specifying the keyword and date range. Other information is available, but I’m only asking it for interest over time.</li>
+<li>Create a new column with the logarithmic scale for hits and a floor date for weeks - since this is weekly data I have to have a way to join it consistently with the stock dataframe.</li>
+<li>Add the Google trend data to the stock dataframe and future dataframe.</li>
+<li>Add as a regressor and fit the prophet model</li>
+</ol>
+<p>At this point, I realized that I had NAs in my Google trend data because (duh) they can’t magically provide future trend data. I wondered if it was still worth using, but I decided to test it out anyways. All I did was replace the NAs for the future data with the average hits of the prior data.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Run the forecast and plot the model.</li>
+</ol>
+<pre class="r"><code>google_trend &lt;- gtrends(
+  keyword = &quot;BB&quot;,
+  geo = &quot;US&quot;,
+  onlyInterest = TRUE,
+  time = &quot;2017-06-11 2021-06-11&quot;
+)$interest_over_time
+
+google_trend &lt;- google_trend %&gt;%
+  mutate(log_hits = log(hits)) %&gt;%
+  mutate(date2 = floor_date(date, &quot;weeks&quot;))
+
+df &lt;- df %&gt;%
+  mutate(date2 = floor_date(ds, unit = &quot;weeks&quot;)) %&gt;%
+  left_join(google_trend %&gt;% select(date2, hits, log_hits))
+
+future3 &lt;- future3 %&gt;%
+  mutate(date2 = floor_date(ds, &quot;weeks&quot;)) %&gt;%
+  left_join(google_trend %&gt;% select(date2, hits, log_hits))
+
+m5 &lt;- prophet(holidays = generated_holidays)
+
+m5 &lt;- add_regressor(m5, &quot;hits&quot;)
+
+m5 &lt;- fit.prophet(m5, df)
+
+future3 &lt;- future3 %&gt;% 
+  mutate(hits = replace_na(hits, 28),
+         log_hits = log(hits))
+
+forecast5 &lt;- predict(m5, future3)
+
+test5 &lt;- plot(m5, forecast5)</code></pre>
+<p>The results are actually pretty cool, it seems that even though we don’t have magic future trend data, using the past trend data was enough to improve the model.</p>
+<ul>
+<li>The new model correctly predicted the huge price increases.</li>
+<li>It accurately predicted the decrease in price after the first spike, whereas the previous models did not.</li>
+<li>We have a more reasonable price prediction for the near future, and potentially a more accurate prediction for the next year.</li>
+<li>Uncertainty increases after January 2022, but it is still much better than the first one-year prediction with the increased flexibility.</li>
+</ul>
+<p>The green line below the chart is just the log scale of the Google trend data so you can see how that played out especially during the price increases.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="2100" /></p>
+</div>
+</div>
+<div id="my-picks-week-of-june-14th-2021" class="section level2">
+<h2>My Picks Week of June 14th 2021</h2>
+<p>My current positions are:</p>
+<ul>
+<li>MNMD (shares)</li>
+<li>TLRY (shares)</li>
+<li>SPCE (puts)</li>
+</ul>
+<p>With ggplot line charts and using facet_wrap, I can easily compare the price action between different tickers. Here is the closing price of each stock for the past calendar year for the six with the most historical data. I’m mostly focusing on the first four.</p>
+<pre class="r"><code>stocks %&gt;%
+  filter(ref_date &gt;= &quot;2020-06-13&quot;,
+         ticker %in% c(&quot;CLX&quot;, &quot;UAVS&quot;, &quot;SPCE&quot;,
+                       &quot;MNMD&quot;, &quot;TLRY&quot;, &quot;ENG&quot;)) %&gt;%
+  ggplot(aes(
+    x = ref_date,
+    y = price_close,
+    group = ticker,
+    color = ticker
+  )) +
+  geom_line() +
+  labs(title = &quot;Daily Chart&quot;,
+       y = &quot;Closing Price&quot;, x = &quot;&quot;) +
+  scale_x_date(date_labels = &quot;%m-%y&quot;,
+               limits = c(today() %m-% years(1), today() %m+% months(1))) +
+  facet_wrap(~ ticker, ncol = 2, scale = &quot;free_y&quot;) +
+  my_theme</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div id="clx" class="section level3">
+<h3>CLX</h3>
+<p>I picked this ticker because:</p>
+<ol style="list-style-type: decimal">
+<li>Household goods sector seasonality comes into play during the summer months</li>
+<li>It’s been on a downtrend for quite a while and the chart looks ready to break out</li>
+<li>Calls are cheap</li>
+</ol>
+<p>It might not be the best prediction chart, but the charts are not the only basis for this pick. I’m planning on entering early this coming week.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="eng" class="section level3">
+<h3>ENG</h3>
+<p>I traded this before and sold at the peak, I think it has another run coming. If it can get above $3 and hold I will take a call position.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="mnmd" class="section level3">
+<h3>MNMD</h3>
+<p>Mindmed benefitted from the Google trend data, but I didn’t plot it because it was very messy looking. I’m bullish on this ticker and sector overall for similar reasons as the cannabis stocks.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+<div id="spce" class="section level3">
+<h3>SPCE</h3>
+<p>I like SPCE overall, but I think it’s due for a pretty sharp drop before the next leg up, which is why I have short term puts.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+<div id="tlry" class="section level3">
+<h3>TLRY</h3>
+<p>TLRY was another case where the Google trend data improved the model quite a bit (not all of them were useful). I didn’t include the Google trend line because it was too messy with the actual numbers and not super useful on the log scale.</p>
+<p>Tilray is more of a long-term swing for me, I bought some shares when it was around $17 recently to sell covered calls. Very bullish on this in the near future, and the whole sector really.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="uavs" class="section level3">
+<h3>UAVS</h3>
+<p>UAVS is a drone play and I really like the chart setup here. With the historical data it just looks like a giant cup and handle. Drones were also featured in ARK’s <a href="https://ark-invest.com/big-ideas-2021/">Big Ideas 2021</a>.</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>And that’s all for today. Maybe I’ll check back in a year and see what actually happened. In the meantime, I’ll be busy researching - and hopefully making money.</p>
+</div>
+</div>
