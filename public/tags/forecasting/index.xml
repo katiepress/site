@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>forecasting on Kpress R Blog</title>
+    <link>https://www.kpress.dev/tags/forecasting/</link>
+    <description>Recent content in forecasting on Kpress R Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 13 Jun 2021 21:13:14 -0500</lastBuildDate><atom:link href="https://www.kpress.dev/tags/forecasting/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fight The Future: Stock Forecasting with Prophet</title>
+      <link>https://www.kpress.dev/blog/2021-01-03-test-post-3/</link>
+      <pubDate>Sun, 13 Jun 2021 21:13:14 -0500</pubDate>
+      
+      <guid>https://www.kpress.dev/blog/2021-01-03-test-post-3/</guid>
+      <description>Background and Disclaimer This post (unfortunately) has nothing to do with the X-Files 1998 movie “Fight the Future” but I couldn’t resist using the title.
+Facebook created a forecasting package for R and Python called Prophet. I’ve seen quite a few tutorials and examples for Prophet in Python but not many for R. Documentation can be found here for both languages.
+From the description:
+“Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects.</description>
+    </item>
+    
+  </channel>
+</rss>

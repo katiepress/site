@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://www.kpress.dev/blog/</loc>
-    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
     <loc>https://www.kpress.dev/categories/</loc>
-    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -60,16 +57,15 @@
                 hreflang="en"
                 href="https://www.kpress.dev/categories/"
                 />
-  </url>
-  
-  <url>
-    <loc>https://www.kpress.dev/tags/charts/</loc>
-    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://www.kpress.dev/blog/2021-01-03-test-post-3/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
+    <loc>https://www.kpress.dev/tags/forecasting/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
     <loc>https://www.kpress.dev/</loc>
-    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -120,16 +116,21 @@
                 hreflang="en"
                 href="https://www.kpress.dev/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://www.kpress.dev/tags/plot/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
     <loc>https://www.kpress.dev/categories/r/</loc>
-    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
+    <loc>https://www.kpress.dev/categories/stocks/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
+    <loc>https://www.kpress.dev/tags/stocks/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
     <loc>https://www.kpress.dev/tags/</loc>
-    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -180,44 +181,31 @@
                 hreflang="en"
                 href="https://www.kpress.dev/tags/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://www.kpress.dev/tags/charts/</loc>
+    <lastmod>2021-01-03T21:13:14-05:00</lastmod>
+  </url><url>
     <loc>https://www.kpress.dev/tags/text-analysis/</loc>
     <lastmod>2021-01-03T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/blog/2021-01-03-trust-no-one/</loc>
     <lastmod>2021-01-03T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/categories/x-files/</loc>
     <lastmod>2021-01-03T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/tags/datasets/</loc>
     <lastmod>2020-11-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/blog/2021-01-03-the-truth-is-out-there-part-ii/</loc>
     <lastmod>2020-11-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/tags/web-scraping/</loc>
     <lastmod>2020-11-01T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/blog/2021-01-03-the-truth-is-out-there/</loc>
     <lastmod>2020-10-04T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/about/</loc>
     <lastmod>2019-02-28T00:00:00+00:00</lastmod>
     <xhtml:link
@@ -240,9 +228,7 @@
                 hreflang="en"
                 href="https://www.kpress.dev/about/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/contact/</loc>
     <xhtml:link
                 rel="alternate"
@@ -265,5 +251,4 @@
                 href="https://www.kpress.dev/contact/"
                 />
   </url>
-  
 </urlset>

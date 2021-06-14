@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://www.kpress.dev/es/categories/</loc>
     <xhtml:link
@@ -54,9 +53,7 @@
                 hreflang="es"
                 href="https://www.kpress.dev/es/categories/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/es/contact/</loc>
     <xhtml:link
                 rel="alternate"
@@ -78,9 +75,7 @@
                 hreflang="es"
                 href="https://www.kpress.dev/es/contact/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/es/</loc>
     <xhtml:link
                 rel="alternate"
@@ -132,9 +127,7 @@
                 hreflang="es"
                 href="https://www.kpress.dev/es/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.kpress.dev/es/tags/</loc>
     <xhtml:link
                 rel="alternate"
@@ -187,5 +180,4 @@
                 href="https://www.kpress.dev/es/tags/"
                 />
   </url>
-  
 </urlset>
