@@ -3,7 +3,6 @@ title: "Fight The Future: Stock Forecasting with Prophet"
 author: "Katie Press"
 date: 2021-06-13T21:13:14-05:00
 categories: ["R", "Stocks"]
-draft: false
 tags: ["plot", "stocks", "forecasting"]
 images:
 - alt: BB Prophet Prediction
