@@ -21,6 +21,7 @@ output:
 
 
 
+
 ## Background and Disclaimer
 
 This post (unfortunately) has nothing to do with the X-Files 1998 movie "Fight the Future" but I couldn't resist using the title.  
@@ -33,6 +34,17 @@ From the description:
 
 Disclaimer: This blog post is NOT intended as investment advice. The charts and analyses contained within this post are provided to illustrate the functions of the prophet package and to share my personal opinions on stocks.
 
+I have the following packages loaded: 
+
+- tidyverse
+- lubridate
+- janitor
+- prophet
+- BatchGetSymbols
+- tidyquant
+- knitr
+- gtrendsR
+
 ## Getting Data
 
 First, using the package BatchGetSymbols to get the stocks I'm interested in. 
@@ -43,8 +55,8 @@ stocks <- BatchGetSymbols(
   c("BB", "CLX",
     "UAVS", "TLRY",
     "ENG", "SPCE", "MNMD"),
-  first.date = today() %m-% years(4),
-  last.date = today(),
+  first.date = ymd("2021-06-11") %m-% years(4),
+  last.date = ymd("2021-06-11"),
   thresh.bad.data = .1
 )$df.tickers
 
@@ -56,6 +68,27 @@ stocks <- stocks %>% clean_names()
 ## Forecasting with prophet
 
 For the forecasting exercise, I'm going to start with BB. I'm interested to see what the prophet model will do with sudden price increases, and BB seemed like the more reasonable way to test this, as opposed to GME where we have a $300+ increase. The tidyquant package has a geom_candlestick chart function for ggplot, which is what I'm using here. 
+
+
+```r
+stocks %>%
+  filter(ticker == "BB", ref_date >= "2021-01-01") %>%
+  ggplot(aes(x = ref_date, y = price_close)) +
+  geom_candlestick(
+    aes(
+      open = price_open,
+      high = price_high,
+      low = price_low,
+      close = price_close
+    ),
+    colour_up = pal.9[5],
+    colour_down = pal.9[1],
+    fill_up = pal.9[5],
+    fill_down = pal.9[1]
+  ) +
+  labs(title = "BB Daily Chart YTD", y = "Closing Price", x = "") +
+  my_theme
+```
 
 <img src="index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
@@ -157,6 +190,22 @@ m2 <- prophet(df_train, changepoint.prior.scale = 0.5, holidays = generated_holi
 forecast2 <- predict(m2, future)
 ```
 
+
+```r
+forecast2 %>%
+  ggplot(aes(x = as.Date(ds), y = yhat)) +
+  geom_line(col = pal.9[6], size = 1.1) +
+  geom_point(data = df_train, aes(x = ds, y = y), col = pal.9[9]) +
+  geom_point(data = df_test, aes(x = ds, y = y), col = pal.9[8]) +
+  labs(
+    title = "BB Prophet Model vs. Test Data",
+    subtitle = "120 Day Prediction: Increased Model Flexibility",
+    y = "Closing Price",
+    x = ""
+  ) +
+  my_theme
+```
+
 <img src="index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" />
   
 ## One Year Prediction 
@@ -219,7 +268,12 @@ At this point, I realized that I had NAs in my Google trend data because (duh) t
 5. Run the forecast and plot the model.
 
 
+
 ```r
+df <- stocks %>% 
+  filter(ticker == "BB") %>% 
+  select("ds" = ref_date, "y" = price_close)
+
 google_trend <- gtrends(
   keyword = "BB",
   geo = "US",
@@ -231,12 +285,16 @@ google_trend <- google_trend %>%
   mutate(log_hits = log(hits)) %>%
   mutate(date2 = floor_date(date, "weeks"))
 
-df <- df %>%
-  mutate(date2 = floor_date(ds, unit = "weeks")) %>%
+df <- df %>% 
+  mutate(date2 = floor_date(ds, unit = "weeks")) %>% 
   left_join(google_trend %>% select(date2, hits, log_hits))
 
-future3 <- future3 %>%
-  mutate(date2 = floor_date(ds, "weeks")) %>%
+m5 <- prophet(df, holidays = generated_holidays)
+
+future5 <- make_future_dataframe(m5, periods = 365)
+
+future5 <- future5 %>% 
+  mutate(date2 = floor_date(ds, "weeks")) %>% 
   left_join(google_trend %>% select(date2, hits, log_hits))
 
 m5 <- prophet(holidays = generated_holidays)
@@ -245,11 +303,13 @@ m5 <- add_regressor(m5, "hits")
 
 m5 <- fit.prophet(m5, df)
 
-future3 <- future3 %>% 
-  mutate(hits = replace_na(hits, 28),
+avg.hits <- future5 %>% summarise(avg = mean(hits, na.rm=TRUE)) %>% pull(avg)
+
+future5 <- future5 %>% 
+  mutate(hits = replace_na(hits, avg.hits),
          log_hits = log(hits))
 
-forecast5 <- predict(m5, future3)
+forecast5 <- predict(m5, future5)
 
 test5 <- plot(m5, forecast5)
 ```
@@ -263,7 +323,7 @@ The results are actually pretty cool, it seems that even though we don't have ma
 
 The green line below the chart is just the log scale of the Google trend data so you can see how that played out especially during the price increases.  
 
-<img src="index.en_files/figure-html/unnamed-chunk-18-1.png" width="2100" />
+<img src="index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 
 ## My Picks Week of June 14th 2021
@@ -295,6 +355,10 @@ stocks %>%
                limits = c(today() %m-% years(1), today() %m+% months(1))) +
   facet_wrap(~ ticker, ncol = 2, scale = "free_y") +
   my_theme
+```
+
+```
+## Warning: Removed 30 row(s) containing missing values (geom_path).
 ```
 
 <img src="index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" />
