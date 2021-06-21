@@ -238,6 +238,17 @@
 <p>From the description:</p>
 <p>“Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is robust to missing data and shifts in the trend, and typically handles outliers well.”</p>
 <p>Disclaimer: This blog post is NOT intended as investment advice. The charts and analyses contained within this post are provided to illustrate the functions of the prophet package and to share my personal opinions on stocks.</p>
+<p>I have the following packages loaded:</p>
+<ul>
+<li>tidyverse</li>
+<li>lubridate</li>
+<li>janitor</li>
+<li>prophet</li>
+<li>BatchGetSymbols</li>
+<li>tidyquant</li>
+<li>knitr</li>
+<li>gtrendsR</li>
+</ul>
 </div>
 <div id="getting-data" class="section level2">
 <h2>Getting Data</h2>
@@ -246,8 +257,8 @@
   c(&quot;BB&quot;, &quot;CLX&quot;,
     &quot;UAVS&quot;, &quot;TLRY&quot;,
     &quot;ENG&quot;, &quot;SPCE&quot;, &quot;MNMD&quot;),
-  first.date = today() %m-% years(4),
-  last.date = today(),
+  first.date = ymd(&quot;2021-06-11&quot;) %m-% years(4),
+  last.date = ymd(&quot;2021-06-11&quot;),
   thresh.bad.data = .1
 )$df.tickers
 
@@ -256,6 +267,23 @@ stocks &lt;- stocks %&gt;% clean_names()</code></pre>
 <div id="forecasting-with-prophet" class="section level2">
 <h2>Forecasting with prophet</h2>
 <p>For the forecasting exercise, I’m going to start with BB. I’m interested to see what the prophet model will do with sudden price increases, and BB seemed like the more reasonable way to test this, as opposed to GME where we have a $300+ increase. The tidyquant package has a geom_candlestick chart function for ggplot, which is what I’m using here.</p>
+<pre class="r"><code>stocks %&gt;%
+  filter(ticker == &quot;BB&quot;, ref_date &gt;= &quot;2021-01-01&quot;) %&gt;%
+  ggplot(aes(x = ref_date, y = price_close)) +
+  geom_candlestick(
+    aes(
+      open = price_open,
+      high = price_high,
+      low = price_low,
+      close = price_close
+    ),
+    colour_up = pal.9[5],
+    colour_down = pal.9[1],
+    fill_up = pal.9[5],
+    fill_down = pal.9[1]
+  ) +
+  labs(title = &quot;BB Daily Chart YTD&quot;, y = &quot;Closing Price&quot;, x = &quot;&quot;) +
+  my_theme</code></pre>
 <p><img src="https://www.kpress.dev/blog/2021-01-03-fight-the-future/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <div id="getting-started" class="section level3">
 <h3>Getting Started</h3>
@@ -327,6 +355,18 @@ test &lt;- plot(m, forecast)</code></pre>
 <p>It looks like I need to increase the flexibility of the forecast, and maybe that would help me get a higher prediction in both January and June (closer to the actual price). I think this result is quite interesting. It predicted the second increase almost exactly, but it still doesn’t account for the large dip before the stock shot up to $15 again. Historically though, it predicted downtrends just fine.</p>
 <pre class="r"><code>m2 &lt;- prophet(df_train, changepoint.prior.scale = 0.5, holidays = generated_holidays)
 forecast2 &lt;- predict(m2, future)</code></pre>
+<pre class="r"><code>forecast2 %&gt;%
+  ggplot(aes(x = as.Date(ds), y = yhat)) +
+  geom_line(col = pal.9[6], size = 1.1) +
+  geom_point(data = df_train, aes(x = ds, y = y), col = pal.9[9]) +
+  geom_point(data = df_test, aes(x = ds, y = y), col = pal.9[8]) +
+  labs(
+    title = &quot;BB Prophet Model vs. Test Data&quot;,
+    subtitle = &quot;120 Day Prediction: Increased Model Flexibility&quot;,
+    y = &quot;Closing Price&quot;,
+    x = &quot;&quot;
+  ) +
+  my_theme</code></pre>
 <p><img src="https://www.kpress.dev/blog/2021-01-03-fight-the-future/index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 </div>
@@ -374,7 +414,11 @@ test3 &lt;- plot(m4, forecast4)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Run the forecast and plot the model.</li>
 </ol>
-<pre class="r"><code>google_trend &lt;- gtrends(
+<pre class="r"><code>df &lt;- stocks %&gt;% 
+  filter(ticker == &quot;BB&quot;) %&gt;% 
+  select(&quot;ds&quot; = ref_date, &quot;y&quot; = price_close)
+
+google_trend &lt;- gtrends(
   keyword = &quot;BB&quot;,
   geo = &quot;US&quot;,
   onlyInterest = TRUE,
@@ -385,12 +429,16 @@ google_trend &lt;- google_trend %&gt;%
   mutate(log_hits = log(hits)) %&gt;%
   mutate(date2 = floor_date(date, &quot;weeks&quot;))
 
-df &lt;- df %&gt;%
-  mutate(date2 = floor_date(ds, unit = &quot;weeks&quot;)) %&gt;%
+df &lt;- df %&gt;% 
+  mutate(date2 = floor_date(ds, unit = &quot;weeks&quot;)) %&gt;% 
   left_join(google_trend %&gt;% select(date2, hits, log_hits))
 
-future3 &lt;- future3 %&gt;%
-  mutate(date2 = floor_date(ds, &quot;weeks&quot;)) %&gt;%
+m5 &lt;- prophet(df, holidays = generated_holidays)
+
+future5 &lt;- make_future_dataframe(m5, periods = 365)
+
+future5 &lt;- future5 %&gt;% 
+  mutate(date2 = floor_date(ds, &quot;weeks&quot;)) %&gt;% 
   left_join(google_trend %&gt;% select(date2, hits, log_hits))
 
 m5 &lt;- prophet(holidays = generated_holidays)
@@ -399,11 +447,13 @@ m5 &lt;- add_regressor(m5, &quot;hits&quot;)
 
 m5 &lt;- fit.prophet(m5, df)
 
-future3 &lt;- future3 %&gt;% 
-  mutate(hits = replace_na(hits, 28),
+avg.hits &lt;- future5 %&gt;% summarise(avg = mean(hits, na.rm=TRUE)) %&gt;% pull(avg)
+
+future5 &lt;- future5 %&gt;% 
+  mutate(hits = replace_na(hits, avg.hits),
          log_hits = log(hits))
 
-forecast5 &lt;- predict(m5, future3)
+forecast5 &lt;- predict(m5, future5)
 
 test5 &lt;- plot(m5, forecast5)</code></pre>
 <p>The results are actually pretty cool, it seems that even though we don’t have magic future trend data, using the past trend data was enough to improve the model.</p>
@@ -414,7 +464,7 @@ test5 &lt;- plot(m5, forecast5)</code></pre>
 <li>Uncertainty increases after January 2022, but it is still much better than the first one-year prediction with the increased flexibility.</li>
 </ul>
 <p>The green line below the chart is just the log scale of the Google trend data so you can see how that played out especially during the price increases.</p>
-<p><img src="https://www.kpress.dev/blog/2021-01-03-fight-the-future/index.en_files/figure-html/unnamed-chunk-18-1.png" width="2100" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-01-03-fight-the-future/index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 </div>
 <div id="my-picks-week-of-june-14th-2021" class="section level2">
@@ -443,6 +493,7 @@ test5 &lt;- plot(m5, forecast5)</code></pre>
                limits = c(today() %m-% years(1), today() %m+% months(1))) +
   facet_wrap(~ ticker, ncol = 2, scale = &quot;free_y&quot;) +
   my_theme</code></pre>
+<pre><code>## Warning: Removed 30 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="https://www.kpress.dev/blog/2021-01-03-fight-the-future/index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <div id="clx" class="section level3">
 <h3>CLX</h3>
