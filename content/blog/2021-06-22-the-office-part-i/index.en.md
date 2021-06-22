@@ -4,7 +4,6 @@ author: Katie Press
 date: 2021-06-22T21:08:00-00:00
 categories: ["R"]
 tags: ["plot", "stocks", "regression"]
-draft: true
 images:
 - alt: Monthly Income by Job Role
   src: img/2021/jobrole.png
