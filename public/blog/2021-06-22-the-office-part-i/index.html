@@ -1,22 +1,234 @@
----
-title: 'The Office: Part I'
-author: Katie Press
-date: 2021-06-21T21:13:14-05:00
-categories: ["R"]
-tags: ["plot", "stocks", "regression"]
-images:
-- alt: Monthly Income by Job Role
-  src: img/2021/jobrole.png
-  stretch: horizontal
-output: 
-  blogdown::html_page: 
-    keep_md: true
-    df_print: paged
----
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>The Office: Part I - Kpress R Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
-<link href="{{< blogdown/postref >}}index.en_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
-<script src="{{< blogdown/postref >}}index.en_files/pagedtable/js/pagedtable.js"></script>
+
+<meta name="generator" content="Hugo 0.83.1" /><meta property="og:site_name" content="Kpress R Blog">
+  <meta property="og:title" content="The Office: Part I">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/">
+  <meta property="og:type" content="article">
+  
+    
+      <meta property="og:image" content="https://www.kpress.dev/img/2021/jobrole.png">
+      <meta property="og:image:alt" content="Monthly Income by Job Role">
+    
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/tomorrow-night.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.1bfccf86359e3de974865922b006112447a52f942c2a9c2bf93d159980ae641b.css" integrity="sha256-G/zPhjWePel0hlkisAYRJEelL5QsKpwr&#43;T0VmYCuZBs="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          <img src='/img/main/white_logo.svg'>
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fa fa-home'></i> Home</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> Blog</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> Categories</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> Contact</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="en">en</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="en" class="nav link active">English (en)</a>
+  
+    
+      
+    
+      
+        <a href="/fr" lang="fr" class="nav no-lang link">Français (fr)</a>
+      
+    
+      
+        <a href="/pl" lang="pl" class="nav no-lang link">Polski (pl)</a>
+      
+    
+      
+        <a href="/pt" lang="pt" class="nav no-lang link">Português (pt)</a>
+      
+    
+      
+        <a href="/de" lang="de" class="nav no-lang link">Deutsche (de)</a>
+      
+    
+      
+        <a href="/es" lang="es" class="nav no-lang link">Española (es)</a>
+      
+    
+      
+        <a href="/zh-cn" lang="zh-cn" class="nav no-lang link">中文 (zh-cn)</a>
+      
+    
+      
+        <a href="/zh-tw" lang="zh-tw" class="nav no-lang link">中文 (zh-tw)</a>
+      
+    
+      
+        <a href="/ja" lang="ja" class="nav no-lang link">日本語 (ja)</a>
+      
+    
+      
+        <a href="/nl" lang="nl" class="nav no-lang link">Nederlands (nl)</a>
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=The%20Office%3a%20Part%20I&amp;url=https%3a%2f%2fwww.kpress.dev%2fblog%2f2021-06-22-the-office-part-i%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fwww.kpress.dev%2fblog%2f2021-06-22-the-office-part-i%2f&amp;title=The%20Office%3a%20Part%20I" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by Katie%20Press&amp;body=https%3a%2f%2fwww.kpress.dev%2fblog%2f2021-06-22-the-office-part-i%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://www.kpress.dev/img/main/tuxedo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Katie Press</h1>
+  </header>
+  <main>
+    <p>R Programmer, Data Enthusiast, Researcher</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/katiepress" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/katie_press" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="mailto:katherine.e.press@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/blog/2021-06-22-the-office-part-i/">The Office: Part I</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2021-06-21 21:13:14 -0500 CDT">June 21, 2021</time>
+    <p>Katie Press</p>
+    
+  </div>
+</header>
+ 
+    <div class="content">
+      <a href="/blog/2021-06-22-the-office-part-i/" class="image">
+    <img class="stretchH" src="https://www.kpress.dev/img/2021/jobrole.png" alt="Monthly Income by Job Role">
+  </a>
+      
+<script src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/header-attrs/header-attrs.js"></script>
+<link href="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
+<script src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/pagedtable/js/pagedtable.js"></script>
 
 
 <div id="background" class="section level1">
@@ -330,7 +542,7 @@ data_list &lt;- data_list %&gt;%
         axis.title.y = element_blank(),
         axis.title.x = element_blank(),
         axis.ticks.y = element_blank())</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="bar-charts" class="section level2">
 <h2>Bar Charts</h2>
 <p>For the categorical variables it’s not quite as easy to plot multiple charts at once. But I can start by nesting the data. This gives me a list of dataframes - one for every item I want to plot.</p>
@@ -408,7 +620,7 @@ print(head(plot_data))</code></pre>
   ncol = 3,
   align = &#39;hv&#39;
 )</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/figure-html/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ridgeline-charts" class="section level2">
 <h2>Ridgeline Charts</h2>
@@ -419,7 +631,7 @@ print(head(plot_data))</code></pre>
   ggtitle(&quot;Monthly Income by Job Role&quot;)+
   my_theme+
   theme(axis.title.y = element_blank())</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>By level of education:</p>
 <pre class="r"><code>ggplot(data, aes(x = monthly_income, y= education_2, fill = education_2))+
   geom_density_ridges()+
@@ -427,7 +639,7 @@ print(head(plot_data))</code></pre>
   ggtitle(&quot;Monthly Income by Education Level&quot;)+
   my_theme+
   theme(axis.title.y = element_blank())</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/figure-html/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="creating-the-models" class="section level1">
@@ -758,7 +970,7 @@ ggplot(plot2, aes(x = estimate, y = term, fill = term)) +
   my_theme+
   theme(axis.title.y = element_blank(),
         axis.title.x = element_text(family = &quot;Arial&quot;, hjust = .5))</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>It looks like people who travel frequently have some of the highest odds ratios, which means they are more likely to leave their jobs. People who travel rarely are also likely to leave - in comparison to those who don’t travel at all. Single people and research directors also have high likelihoods of leaving. These four variables also seem to vary the most in terms of the odds ratio across all models. For example the lowest odds ratio for marital status: single was around 2.6 and the highest was around 3.4.</p>
 <p>Average weekly hours, number of companies worked for, and years since last promotion all had a slightly higher likelihood of leaving, and their odds ratios were quite similar across all models. The lowest odds ratio for average weekly hours was 1.08, and the highest was 1.096.</p>
 <p>Some variables are associated with lower likelihood of leaving, for example age (older) and years at the company, some education fields and job roles.</p>
@@ -1202,7 +1414,249 @@ p2 &lt;- data %&gt;%
         axis.title.y = element_blank(),
         axis.ticks.y = element_blank())</code></pre>
 <pre class="r"><code>ggpubr::ggarrange(p1, p2, align = &#39;hv&#39;)</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-44-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.kpress.dev/blog/2021-06-22-the-office-part-i/index.en_files/figure-html/unnamed-chunk-44-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>Next time maybe I’ll do some latent profile analysis on this dataset.</p>
 </div>
 </div>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/r/">R</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/plot/">plot</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/stocks/">stocks</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/regression/">regression</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-zxbl2vcnni" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </article>
+
+
+
+
+  
+  <div class="pagination">
+    
+    
+      <a href="/blog/2021-01-03-fight-the-future/" class="button right"><span>Fight The Future: Stock Forecasting with Prophet</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Recent Posts</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/2021-06-22-the-office-part-i/" class="image">
+    <img class="stretchH" src="https://www.kpress.dev/img/2021/jobrole.png" alt="Monthly Income by Job Role">
+  </a>
+        <header>
+          <h2><a href="/blog/2021-06-22-the-office-part-i/">The Office: Part I</a></h2>
+          <time class="published" datetime="2021-06-21 21:13:14 -0500 CDT">June 21, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2021-01-03-fight-the-future/" class="image">
+    <img class="stretchH" src="https://www.kpress.dev/img/2021/bbstock.png" alt="BB Prophet Prediction">
+  </a>
+        <header>
+          <h2><a href="/blog/2021-01-03-fight-the-future/">Fight The Future: Stock Forecasting with Prophet</a></h2>
+          <time class="published" datetime="2021-06-13 21:13:14 -0500 CDT">June 13, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2021-01-03-trust-no-one/" class="image">
+    <img class="stretchH" src="https://www.kpress.dev/img/2021/trust_no_2.png" alt="X Files Chart 3">
+  </a>
+        <header>
+          <h2><a href="/blog/2021-01-03-trust-no-one/">Trust No One</a></h2>
+          <time class="published" datetime="2021-01-03 21:13:14 -0500 -0500">January 3, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2021-01-03-the-truth-is-out-there-part-ii/" class="image">
+    <img class="stretchH" src="https://www.kpress.dev/img/2021/thetruth_part2_plot2.png" alt="X Files Chart 2">
+  </a>
+        <header>
+          <h2><a href="/blog/2021-01-03-the-truth-is-out-there-part-ii/">I Want To Believe</a></h2>
+          <time class="published" datetime="2020-11-01 21:13:14 -0500 -0500">November 1, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2021-01-03-the-truth-is-out-there/" class="image">
+    <img class="stretchH" src="https://www.kpress.dev/img/2021/thetruth1_plot1.png" alt="X Files Chart 1">
+  </a>
+        <header>
+          <h2><a href="/blog/2021-01-03-the-truth-is-out-there/">The Truth Is Out There</a></h2>
+          <time class="published" datetime="2020-10-04 21:13:14 -0500 CDT">October 4, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">See More</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">Categories</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/r/">r<span class="count">5</span></a>
+          
+          <li>
+              <a href="/categories/x-files/">x-files<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/stocks/">stocks<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+<link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	#mc_embed_signup{background:##f4f4f4; clear:left; font-family: "Raleway", Helvetica, sans-serif;}
+	 
+</style>
+<div id="mc_embed_signup">
+<form action="https://dev.us2.list-manage.com/subscribe/post?u=127f1a0cd94c887d4539ae400&amp;id=041b3db1da" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+    <div id="mc_embed_signup_scroll">
+	
+	<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+    
+    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_127f1a0cd94c887d4539ae400_041b3db1da" tabindex="-1" value=""></div>
+    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+    </div>
+</form>
+</div>
+
+
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/katiepress" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/katie_press" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="mailto:katherine.e.press@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 Kpress R Blog
+      <br>
+    Theme: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>A <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP port</a> | Powered by <a href='https://gohugo.io/' title='0.83.1' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/languages/r.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.1ac7a98b06451b2770fdaaee2f67721ab7e137a5fee8352dc78a33e7a69b3244.js" integrity="sha256-GsepiwZFGydw/aruL2dyGrfhN6X&#43;6DUtx4oz56abMkQ="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 ---
 title: 'The Office: Part I'
 author: Katie Press
-date: 2021-06-22T21:13:14-05:00
+date: 2021-06-21T21:13:14-05:00
 categories: ["R"]
 tags: ["plot", "stocks", "regression"]
 images:
