@@ -1,6 +1,7 @@
 ---
-title: 'The Office: Part I'
+title: 'The Office Part I: Employee Attrition'
 author: Katie Press
+description: "Ask me about regression modeling and if you don't, I'll tell you anyway"
 date: 2021-06-22T21:13:14-05:00
 categories: ["R"]
 tags: ["plot", "stocks", "regression"]
