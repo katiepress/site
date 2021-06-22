@@ -1,0 +1,1209 @@
+---
+title: 'The Office: Part I'
+author: Katie Press
+date: 2021-06-22T21:08:00-00:00
+categories: ["R"]
+tags: ["plot", "stocks", "regression"]
+draft: true
+images:
+- alt: Monthly Income by Job Role
+  src: img/2021/jobrole.png
+  stretch: horizontal
+output: 
+  blogdown::html_page: 
+    keep_md: true
+    df_print: paged
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/pagedtable/js/pagedtable.js"></script>
+
+
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>This post is partially inspired by one of my favorite blogs ever, <a href="https://www.askamanager.org">Ask a Manager</a>. I am obsessed with this content - partly because Alison (the writer) is super smart and gives good advice, partly for the pure entertainment value. I’ll be linking to some great posts along the way, but in the meantime here is a <a href="https://www.askamanager.org/favorite-posts">list of Alison’s favorite posts ever</a>.</p>
+<p>In the past whenever I needed to create a predictive model, I was always frustrated because I wanted to know what the best model would be given all possible combinations of variables. But you wouldn’t want to test all combinations of all variables, because some of them are too similar and would over-inflate the model. For example, I wouldn’t use a variable like “age at event x” and another variable “age over 18 at event x” in one model.</p>
+<p>A few weeks ago I was taking an online Python course and the course was covering truth tables, which look like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">A or B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">T</td>
+<td align="center">T</td>
+<td align="center">T</td>
+</tr>
+<tr class="even">
+<td align="center">T</td>
+<td align="center">F</td>
+<td align="center">T</td>
+</tr>
+<tr class="odd">
+<td align="center">F</td>
+<td align="center">T</td>
+<td align="center">T</td>
+</tr>
+<tr class="even">
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+</tr>
+</tbody>
+</table>
+<p>In order for the third column (A or B) to be true, either A or B, or both A and B need to be true.</p>
+<p>I realized I needed to do was figure out how to recreate a truth table where each column represents a group of potential variables for the model. This post is based on a real project, but I needed some publicly-available data to demonstrate with. I know there is a heart disease that is often used for prediction, but that’s kind of…boring. Also there weren’t that many variables.</p>
+<p>Then I came across this HR employee attrition dataset on <a href="https://www.kaggle.com/vjchoudhary7/hr-analytics-case-study?select=general_data.csv">Kaggle</a> and thought that might be more interesting, given some of the crazy stories I’ve read on Ask a Manager over the years that often resulted in people leaving,, sometimes in rather <a href="https://www.askamanager.org/2017/10/resigning-via-cod-a-glorious-out-of-office-message-and-other-quitting-stories.html">spectacular fashion</a>.</p>
+<p>In this post I’ll cover a little bit of data import and cleaning, visualization, and finally how to create a <em>bunch</em> of models at once. I’ve loaded the following packages:</p>
+<ul>
+<li>tidyverse</li>
+<li>lubridate</li>
+<li>janitor</li>
+<li>knitr</li>
+<li>ggplot2</li>
+<li>readxl</li>
+<li>ggridges</li>
+<li>broom</li>
+<li>glue</li>
+</ul>
+</div>
+<div id="data-import" class="section level1">
+<h1>Data Import</h1>
+<p>I downloaded the csv files from <a href="https://www.kaggle.com/vjchoudhary7/hr-analytics-case-study?select=general_data.csv">Kaggle</a> and created an R Project in the same folder.</p>
+<ul>
+<li>Get list of csv files</li>
+<li>Use purrr::map to read csv into a list of tibbles</li>
+<li>Name the tibbles in the list (this is why I put “full.names = TRUE”)</li>
+<li>Map over the tibbles with janitor’s clean_names function to make the column names all lower case separated by underscores.</li>
+</ul>
+<pre class="r"><code>temp.list &lt;- list.files(full.names = TRUE, pattern = &quot;*.csv&quot;, path = &quot;~/Desktop/Rproj/&quot;)
+
+data_list &lt;- map(temp.list, read_csv)
+
+names(data_list) &lt;- word(temp.list, -2, sep = &quot;/|\\.csv&quot;)
+
+data_list &lt;- data_list %&gt;% 
+  map( ~.x %&gt;% clean_names)</code></pre>
+<p>I have a list of five tibbles, two of which are timestamp datasets and not in tidy format yet.</p>
+<pre class="r"><code>summary(data_list)</code></pre>
+<pre><code>##                      Length Class       Mode
+## employee_survey_data   4    spec_tbl_df list
+## general_data          24    spec_tbl_df list
+## in_time              262    spec_tbl_df list
+## manager_survey_data    3    spec_tbl_df list
+## out_time             262    spec_tbl_df list</code></pre>
+<div id="general-data" class="section level2">
+<h2>General Data</h2>
+<p>We have a general dataset, a manager survey, and an employee survey. These three tables can be joined on employee ID.</p>
+<p>Side note: If you are a manager, try not to force your employees to <a href="https://www.askamanager.org/2020/07/my-manager-makes-us-do-mental-health-surveys-every-day.html">complete a daily mental health survey</a>, it’s not a great look and <a href="https://www.askamanager.org/2020/12/update-my-manager-makes-us-do-mental-health-surveys-every-day.html">they’ll probably all quit</a>.</p>
+<pre class="r"><code>data &lt;- data_list$general_data %&gt;%
+  left_join(data_list$employee_survey_data) %&gt;%
+  left_join(data_list$manager_survey_data) %&gt;%
+  select(employee_id, everything())</code></pre>
+</div>
+<div id="time-data" class="section level2">
+<h2>Time Data</h2>
+<p>This is what the time data looks like currently. Notice each column is a date, except for the first one which corresponds to the employee ID. This is exactly what tidyr is for.</p>
+<pre class="r"><code>head(data_list$in_time)[1:6] %&gt;% 
+  kable()</code></pre>
+<table>
+<colgroup>
+<col width="3%" />
+<col width="12%" />
+<col width="21%" />
+<col width="21%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">x1</th>
+<th align="left">x2015_01_01</th>
+<th align="left">x2015_01_02</th>
+<th align="left">x2015_01_05</th>
+<th align="left">x2015_01_06</th>
+<th align="left">x2015_01_07</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">NA</td>
+<td align="left">2015-01-02 09:43:45</td>
+<td align="left">2015-01-05 10:08:48</td>
+<td align="left">2015-01-06 09:54:26</td>
+<td align="left">2015-01-07 09:34:31</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">NA</td>
+<td align="left">2015-01-02 10:15:44</td>
+<td align="left">2015-01-05 10:21:05</td>
+<td align="left">NA</td>
+<td align="left">2015-01-07 09:45:17</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">NA</td>
+<td align="left">2015-01-02 10:17:41</td>
+<td align="left">2015-01-05 09:50:50</td>
+<td align="left">2015-01-06 10:14:13</td>
+<td align="left">2015-01-07 09:47:27</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">NA</td>
+<td align="left">2015-01-02 10:05:06</td>
+<td align="left">2015-01-05 09:56:32</td>
+<td align="left">2015-01-06 10:11:07</td>
+<td align="left">2015-01-07 09:37:30</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">NA</td>
+<td align="left">2015-01-02 10:28:17</td>
+<td align="left">2015-01-05 09:49:58</td>
+<td align="left">2015-01-06 09:45:28</td>
+<td align="left">2015-01-07 09:49:37</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">NA</td>
+<td align="left">2015-01-02 09:43:08</td>
+<td align="left">2015-01-05 10:14:00</td>
+<td align="left">2015-01-06 10:08:42</td>
+<td align="left">2015-01-07 10:18:15</td>
+</tr>
+</tbody>
+</table>
+<p>Using pivot_longer, I can preserve the employee ID in one column, put the date in another column, and the timestamp in a third column. I usually use lubridate to format dates, in this case I also had to get rid of the “x” at the beginning of the character because otherwise it would be NA. I’m also going to add the timestamps for clocking out.</p>
+<pre class="r"><code>time_data &lt;- data_list$in_time %&gt;%
+  pivot_longer(!x1, names_to = &quot;date&quot;, values_to = &quot;time_in&quot;) %&gt;%
+  mutate(date = ymd(str_remove_all(date, &quot;x&quot;))) %&gt;%
+  left_join(
+    data_list$out_time %&gt;%
+      pivot_longer(!x1, names_to = &quot;date&quot;, values_to = &quot;time_out&quot;) %&gt;%
+      mutate(date = ymd(str_remove_all(date, &quot;x&quot;)))
+  ) %&gt;% 
+  rename(&quot;employee_id&quot; = x1)</code></pre>
+<p>Create some additional variables for aggregation later. This would be especially useful for any <a href="https://www.askamanager.org/2015/01/my-coworker-is-trying-to-track-my-hours-and-pto.html">nosy coworkers</a> who might want to <a href="https://www.askamanager.org/2014/09/my-coworker-is-tracking-my-hours.html">track your hours</a>.</p>
+<ul>
+<li>Number of hours worked each day</li>
+<li>Week column</li>
+</ul>
+<pre class="r"><code>time_data &lt;- time_data %&gt;% 
+  mutate(hours = round(time_length(time_in %--% time_out, &quot;hour&quot;), 2)) %&gt;% 
+  mutate(hours = replace_na(hours, 0)) %&gt;% 
+  mutate(week = week(date))</code></pre>
+<p>Much better</p>
+<pre class="r"><code>head(time_data) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">employee_id</th>
+<th align="left">date</th>
+<th align="left">time_in</th>
+<th align="left">time_out</th>
+<th align="right">hours</th>
+<th align="right">week</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">2015-01-01</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0.00</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">2015-01-02</td>
+<td align="left">2015-01-02 09:43:45</td>
+<td align="left">2015-01-02 16:56:15</td>
+<td align="right">7.21</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">2015-01-05</td>
+<td align="left">2015-01-05 10:08:48</td>
+<td align="left">2015-01-05 17:20:11</td>
+<td align="right">7.19</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">2015-01-06</td>
+<td align="left">2015-01-06 09:54:26</td>
+<td align="left">2015-01-06 17:19:05</td>
+<td align="right">7.41</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">2015-01-07</td>
+<td align="left">2015-01-07 09:34:31</td>
+<td align="left">2015-01-07 16:34:55</td>
+<td align="right">7.01</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">2015-01-08</td>
+<td align="left">2015-01-08 09:51:09</td>
+<td align="left">2015-01-08 17:08:32</td>
+<td align="right">7.29</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="data-cleaning" class="section level1">
+<h1>Data Cleaning</h1>
+<p>Using the data dictionary Excel file provided from Kaggle, I’m recoding some of the numeric variables as factors for better visualization in charts. Also create a numeric variable for attrition (to be used later in modeling).</p>
+<pre class="r"><code>data &lt;- data %&gt;%
+  mutate(education_2 = factor(
+    education,
+    labels = c(&quot;Below College&quot;, &quot;College&quot;, &quot;Bachelors&quot;, &quot;Masters&quot;, &quot;Doctoral&quot;),
+    ordered = TRUE
+  )) %&gt;%
+  mutate(across(
+    one_of(
+      &quot;environment_satisfaction&quot;,
+      &quot;job_involvement&quot;,
+      &quot;job_satisfaction&quot;
+    ),
+    list(&quot;2&quot; = ~ factor(
+      ., labels = c(&quot;Low&quot;, &quot;Medium&quot;, &quot;High&quot;, &quot;Very High&quot;),
+      ordered = TRUE
+    ))
+  )) %&gt;%
+  mutate(performance_rating_2 = factor(performance_rating, 
+                                       labels = c(&quot;Excellent&quot;, &quot;Outstanding&quot;),
+                                       ordered = TRUE)) %&gt;%
+  mutate(work_life_balance_2 = factor(work_life_balance, 
+                                      labels = c(&quot;Bad&quot;, &quot;Good&quot;, &quot;Better&quot;, &quot;Best&quot;),
+                                      ordered = TRUE)) %&gt;% 
+  mutate(business_travel = str_replace_all(business_travel, &quot;_&quot;, &quot; &quot;)) %&gt;% 
+  mutate(attrition_2 = ifelse(attrition == &quot;Yes&quot;, 1, 0))</code></pre>
+<p>Aggregate the timestamp data down to average hours worked per week and add to the dataset.</p>
+<pre class="r"><code>data &lt;- time_data %&gt;% 
+  group_by(employee_id, week) %&gt;% 
+  summarise(week_hours = sum(hours)) %&gt;% 
+  group_by(employee_id) %&gt;% 
+  summarise(avg_weekly_hours = round(mean(week_hours, na.rm=TRUE))) %&gt;% 
+  right_join(data)</code></pre>
+</div>
+<div id="data-viz" class="section level1">
+<h1>Data Viz</h1>
+<p>Checking out some of the numeric variables, I can plot multiple histograms using ggplot and facet_wrap. And here are some fun Ask a Manager posts to go along with them:</p>
+<ul>
+<li>A reader’s direct report is <a href="https://www.askamanager.org/2016/04/my-older-employee-has-an-issue-with-my-age.html">obsessed with her age</a></li>
+<li>What to do when <a href="https://www.askamanager.org/2019/08/my-boss-lectured-me-about-arriving-on-time-when-im-working-a-ton-of-hours.html">you’re working crazy hours and your boss reprimands you for coming in late</a></li>
+<li>If you’re an entry level employee, maybe think twice before <a href="https://www.askamanager.org/2018/10/my-entry-level-employee-gave-me-a-bunch-of-off-base-constructive-criticism.html">giving your manager “constructive” feedback</a></li>
+</ul>
+<pre class="r"><code>data %&gt;% 
+  select(&quot;Age&quot; = age, 
+         &quot;Average Weekly Hours&quot; = avg_weekly_hours, 
+         &quot;Job Level&quot; = job_level,
+         &quot;Number of Companies Worked&quot; = num_companies_worked, 
+         &quot;Total Working Years&quot; = total_working_years, 
+         &quot;Training Times Last Year&quot; = training_times_last_year, 
+         &quot;Years at Company&quot; = years_at_company,
+         &quot;Years Since Last Promotion&quot; = years_since_last_promotion,
+         &quot;Years with Current Manager&quot; = years_with_curr_manager) %&gt;% 
+  gather(item, number) %&gt;% 
+  ggplot(aes(number, color = item, fill = item))+
+  geom_histogram(binwidth = 1)+
+  facet_wrap(~item, scales = &quot;free&quot;)+
+  my_theme +
+  theme(legend.position = &quot;none&quot;,
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank())</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="bar-charts" class="section level2">
+<h2>Bar Charts</h2>
+<p>For the categorical variables it’s not quite as easy to plot multiple charts at once. But I can start by nesting the data. This gives me a list of dataframes - one for every item I want to plot.</p>
+<pre class="r"><code>plot_data &lt;- data %&gt;% 
+  select(&quot;Gender&quot; = gender,
+         &quot;Marital Status&quot; = marital_status,
+         &quot;Business Travel&quot; = business_travel,
+         &quot;Work Life Balance&quot; = work_life_balance_2,
+         
+         &quot;Education&quot; = education_2,
+         &quot;Education Field&quot; = education_field,
+         &quot;Department&quot; = department,
+         &quot;Job Role&quot; = job_role,
+         
+         &quot;Environment Satisfaction&quot; = environment_satisfaction_2,
+         &quot;Job Involvement&quot; = job_involvement_2,
+         &quot;Job Satisfaction&quot; = job_satisfaction_2,
+         &quot;Performance Rating&quot; = performance_rating_2
+         ) %&gt;% 
+  gather(item, thing) %&gt;% 
+  count(item, thing) %&gt;% 
+  group_by(item) %&gt;% 
+  mutate(pct = n/sum(n)) %&gt;% 
+  group_nest(data = item)
+
+print(head(plot_data))</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   item                                   data
+##   &lt;chr&gt;                    &lt;list&lt;tibble[,3]&gt;&gt;
+## 1 Business Travel                     [3 × 3]
+## 2 Department                          [3 × 3]
+## 3 Education                           [5 × 3]
+## 4 Education Field                     [6 × 3]
+## 5 Environment Satisfaction            [5 × 3]
+## 6 Gender                              [2 × 3]</code></pre>
+<p>Now I can use map to iterate over the dataframes with my ggplot code. I’m actually using map2 here so that I can use the “item” column as titles for the charts (pasted in using glue). Now I have the plots in a new column and I can print them out.</p>
+<pre class="r"><code>plot_data &lt;- plot_data %&gt;%
+  mutate(
+    plot = map2(
+      data,
+      item,
+      ~ ggplot(data = .x, aes(
+        x = pct, y = thing, fill = thing
+      )) +
+        ggtitle(glue(&quot;{.y}&quot;)) +
+        geom_col() +
+        scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+        my_theme +
+        theme(axis.title.y = element_blank(),
+              axis.title.x = element_blank(),
+              plot.title = element_text(size = 12))
+    )
+  )
+
+print(head(plot_data))</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   item                                   data plot  
+##   &lt;chr&gt;                    &lt;list&lt;tibble[,3]&gt;&gt; &lt;list&gt;
+## 1 Business Travel                     [3 × 3] &lt;gg&gt;  
+## 2 Department                          [3 × 3] &lt;gg&gt;  
+## 3 Education                           [5 × 3] &lt;gg&gt;  
+## 4 Education Field                     [6 × 3] &lt;gg&gt;  
+## 5 Environment Satisfaction            [5 × 3] &lt;gg&gt;  
+## 6 Gender                              [2 × 3] &lt;gg&gt;</code></pre>
+<p>I’m using ggarrange so that I can lay them out in a grid and make them the same size using horizontal + vertical alignment. Thankfully ggarrange already has a plotlist argument, so I don’t have to write out every plot in the list separately.</p>
+<p>Note: If you don’t want NAs in your charts, you can replace them using fct_explicit_na from the forcats package.</p>
+<p>Speaking of variables, here are some more related posts from Ask a Manager:</p>
+<ul>
+<li>If your company has a <a href="https://www.askamanager.org/2021/06/my-companys-leadership-programs-for-women-excludes-men.html">leadership training program for women</a>, try not to be a jerk about it</li>
+<li>Speaking of marital status, what happens when your <a href="https://www.askamanager.org/2018/05/my-dad-is-dating-my-boss-and-they-want-me-to-go-to-couples-therapy-with-them.html">dad is dating your boss and they want you to go to couples therapy with them</a>?</li>
+</ul>
+<pre class="r"><code>ggpubr::ggarrange(
+  plotlist = plot_data$plot,
+  nrow = 4,
+  ncol = 3,
+  align = &#39;hv&#39;
+)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ridgeline-charts" class="section level2">
+<h2>Ridgeline Charts</h2>
+<p>I would like to visualize how some of the variables interact with each other. Ridgeline charts can be a good way to do that, and they look pretty cool.</p>
+<pre class="r"><code>ggplot(data, aes(x = monthly_income, y= job_role, fill = job_role))+
+  geom_density_ridges()+
+  scale_x_continuous(name = &quot;Monthly Income&quot;, labels = scales::dollar)+
+  ggtitle(&quot;Monthly Income by Job Role&quot;)+
+  my_theme+
+  theme(axis.title.y = element_blank())</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>By level of education:</p>
+<pre class="r"><code>ggplot(data, aes(x = monthly_income, y= education_2, fill = education_2))+
+  geom_density_ridges()+
+  scale_x_continuous(name = &quot;Monthly Income&quot;, labels = scales::dollar)+
+  ggtitle(&quot;Monthly Income by Education Level&quot;)+
+  my_theme+
+  theme(axis.title.y = element_blank())</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="creating-the-models" class="section level1">
+<h1>Creating the Models</h1>
+<p>Now that I’ve cleaned up and explored the data a little bit, it’s time to start the modeling process.</p>
+<div id="creating-variable-groups" class="section level3">
+<h3>Creating Variable Groups</h3>
+<p>To create my “truth table” for all possible combinations of variables to model, I need to group my variables into categories. Some of these probably could be grouped in different ways, but this is just for demonstration purposes so it doesn’t have to be perfect. I’m wrapping all the groups in the crossing() function from tidyr, which will expand these lists to all possible combinations of the different variable groups.</p>
+<pre class="r"><code>cross_df &lt;- crossing(
+    age = c(&quot;age&quot;, &quot;total_working_years&quot;, &quot;num_companies_worked&quot;),
+    demos = c(&quot;gender&quot;, &quot;marital_status&quot;),
+    company_time = c(
+      &quot;years_at_company&quot;,
+      &quot;years_since_last_promotion&quot;,
+      &quot;years_with_curr_manager&quot;
+    ),
+    work_life_balance = c(
+      &quot;distance_from_home&quot;,
+      &quot;business_travel&quot;,
+      &quot;work_life_balance&quot;,
+      &quot;avg_weekly_hours&quot;
+    ),
+    level = c(
+      &quot;education&quot;,
+      &quot;job_level&quot;,
+      &quot;monthly_income&quot;,
+      &quot;stock_option_level&quot;
+    ),
+    work_type = c(&quot;education_field&quot;, &quot;department&quot;, &quot;job_role&quot;),
+    performance = c(
+      &quot;performance_rating&quot;,
+      &quot;training_times_last_year&quot;,
+      &quot;percent_salary_hike&quot;
+    ),
+    satisfaction = c(&quot;environment_satisfaction&quot;, &quot;job_satisfaction&quot;)
+  )</code></pre>
+<p>This is what the resulting tibble looks like. There are 5,184 different possible model combinations.</p>
+<pre class="r"><code>print(head(cross_df))</code></pre>
+<pre><code>## # A tibble: 6 x 8
+##   age   demos  company_time   work_life_balance level  work_type performance    
+##   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;          &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          
+## 1 age   gender years_at_comp… avg_weekly_hours  educa… departme… percent_salary…
+## 2 age   gender years_at_comp… avg_weekly_hours  educa… departme… percent_salary…
+## 3 age   gender years_at_comp… avg_weekly_hours  educa… departme… performance_ra…
+## 4 age   gender years_at_comp… avg_weekly_hours  educa… departme… performance_ra…
+## 5 age   gender years_at_comp… avg_weekly_hours  educa… departme… training_times…
+## 6 age   gender years_at_comp… avg_weekly_hours  educa… departme… training_times…
+## # … with 1 more variable: satisfaction &lt;chr&gt;</code></pre>
+</div>
+<div id="creating-formulas" class="section level3">
+<h3>Creating Formulas</h3>
+<p>Now I have variables I need for the model but they’re all in different columns. I need to make it look more like the formula I’m going to use. To do that, I can use unite (also from tidyr). I’ll combine columns 1 through 8 into a new column called “formula”, separated by the plus sign because that’s the syntax the model will need as an input.</p>
+<p>Then I paste the outcome variable (attrition_2) in front of the formula, just like it would be in a glm model. Add a model name to help keep track of everything later on.</p>
+<pre class="r"><code>formula_df &lt;- cross_df %&gt;% 
+  unite(formula, c(1:8), sep = &quot;+&quot;) %&gt;% 
+  select(formula) %&gt;% 
+  mutate(formula = paste0(&quot;attrition_2 ~ &quot;, formula)) %&gt;% 
+  mutate(model_name = row_number())</code></pre>
+<p>This is what the formula looks like</p>
+<pre class="r"><code>print(head(formula_df))</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   formula                                                             model_name
+##   &lt;chr&gt;                                                                    &lt;int&gt;
+## 1 attrition_2 ~ age+gender+years_at_company+avg_weekly_hours+educati…          1
+## 2 attrition_2 ~ age+gender+years_at_company+avg_weekly_hours+educati…          2
+## 3 attrition_2 ~ age+gender+years_at_company+avg_weekly_hours+educati…          3
+## 4 attrition_2 ~ age+gender+years_at_company+avg_weekly_hours+educati…          4
+## 5 attrition_2 ~ age+gender+years_at_company+avg_weekly_hours+educati…          5
+## 6 attrition_2 ~ age+gender+years_at_company+avg_weekly_hours+educati…          6</code></pre>
+<p>First I will create a function that I can map over my dataset of formulas. This is just a regular binomial logistic regression model.</p>
+<pre class="r"><code>mod_fun &lt;- function(x) {glm(formula = as.formula(x), family = binomial(&quot;logit&quot;), data = data)}</code></pre>
+</div>
+<div id="mapping-the-models" class="section level3">
+<h3>Mapping the Models</h3>
+<p>Now map over the models. WARNING - this will take a minute. It’s a bit faster if you don’t ask for the odds ratios (exponentiated coefficients). If you have a very large dataset, you’re going to want to test this on just a couple of your formulas to make sure you’ve got everything set up right. If you have a really, really large dataset, you can always run it in batches as well. What this does is:</p>
+<ul>
+<li>Map over each cell in the formula column using the formula I created</li>
+<li>Using the broom package, create a new tidied column for the model summary and model fit</li>
+<li>Unnest the model summary and fit info into a tidied dataframe</li>
+</ul>
+<pre class="r"><code>model_df &lt;- formula_df %&gt;% 
+  mutate(models = map(formula, mod_fun), 
+         model_summary = models %&gt;% map(~tidy(., exponentiate = TRUE)), 
+         model_fit = models %&gt;% map(glance)) %&gt;%
+  select(model_name, model_summary, model_fit) %&gt;%
+  unnest(c(model_summary, model_fit)) %&gt;%
+  mutate_if(is.numeric, ~ round(., 3))</code></pre>
+</div>
+<div id="filtering-model-data" class="section level2">
+<h2>Filtering Model Data</h2>
+<p>Now I have a tidy dataset of all the models of all possible combinations of variables in my pre-defined groups. I can filter based on whatever criteria is most important.</p>
+<div id="lowest-aic" class="section level3">
+<h3>Lowest AIC</h3>
+<p>For example, here is the model with the lowest AIC:</p>
+<pre class="r"><code>model_df %&gt;% 
+  filter(AIC == min(AIC)) %&gt;% 
+  head() %&gt;% 
+  print()</code></pre>
+<pre><code>## # A tibble: 6 x 14
+##   model_name term     estimate std.error statistic p.value null.deviance df.null
+##        &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+## 1       4925 (Interc…    0.113     0.397     -5.50   0             3861.    4375
+## 2       4925 total_w…    0.948     0.008     -6.88   0             3861.    4375
+## 3       4925 marital…    1.32      0.133      2.10   0.036         3861.    4375
+## 4       4925 marital…    3.13      0.131      8.69   0             3861.    4375
+## 5       4925 years_w…    0.914     0.016     -5.50   0             3861.    4375
+## 6       4925 avg_wee…    1.09      0.007     13.1    0             3861.    4375
+## # … with 6 more variables: logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;, deviance &lt;dbl&gt;,
+## #   df.residual &lt;dbl&gt;, nobs &lt;dbl&gt;</code></pre>
+</div>
+<div id="all-significant-variables" class="section level3">
+<h3>All Significant Variables</h3>
+<p>Or I could look for models where every variable is statistically significant, or filter to ensure that the model contains one variable I’m particularly interested in.</p>
+<pre class="r"><code>model_df %&gt;% 
+  group_by(model_name) %&gt;% 
+  filter(all(p.value &lt; .1), any(term == &quot;age&quot;)) %&gt;% 
+  head() %&gt;% 
+  print()</code></pre>
+<pre><code>## # A tibble: 6 x 14
+## # Groups:   model_name [1]
+##   model_name term     estimate std.error statistic p.value null.deviance df.null
+##        &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+## 1        869 (Interc…    0.231     0.406     -3.61   0             3870.    4384
+## 2        869 age         0.961     0.005     -7.34   0             3870.    4384
+## 3        869 marital…    1.28      0.132      1.85   0.065         3870.    4384
+## 4        869 marital…    2.96      0.131      8.33   0             3870.    4384
+## 5        869 years_a…    0.947     0.01      -5.56   0             3870.    4384
+## 6        869 avg_wee…    1.09      0.007     13.3    0             3870.    4384
+## # … with 6 more variables: logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;, deviance &lt;dbl&gt;,
+## #   df.residual &lt;dbl&gt;, nobs &lt;dbl&gt;</code></pre>
+</div>
+<div id="significance-of-terms-across-models" class="section level3">
+<h3>Significance of Terms Across Models</h3>
+<p>I could look at how many times a particular term was considered significant across all models. It looks like environment satisfaction, job satisfaction, marital status, age,department, and education field are all near the top of the list. However, stock option level, gender, and a few of the job roles were not significant in many of the models (if at all).</p>
+<pre class="r"><code>model_df %&gt;% 
+  group_by(term) %&gt;% 
+  summarise(num_significant = sum(p.value &lt; .05)) %&gt;% 
+  arrange(desc(num_significant)) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">num_significant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">3394</td>
+</tr>
+<tr class="even">
+<td align="left">environment_satisfaction</td>
+<td align="right">2592</td>
+</tr>
+<tr class="odd">
+<td align="left">job_satisfaction</td>
+<td align="right">2592</td>
+</tr>
+<tr class="even">
+<td align="left">marital_statusSingle</td>
+<td align="right">2592</td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="right">1728</td>
+</tr>
+<tr class="even">
+<td align="left">departmentResearch &amp; Development</td>
+<td align="right">1728</td>
+</tr>
+<tr class="odd">
+<td align="left">departmentSales</td>
+<td align="right">1728</td>
+</tr>
+<tr class="even">
+<td align="left">education_fieldLife Sciences</td>
+<td align="right">1728</td>
+</tr>
+<tr class="odd">
+<td align="left">education_fieldMarketing</td>
+<td align="right">1728</td>
+</tr>
+<tr class="even">
+<td align="left">education_fieldMedical</td>
+<td align="right">1728</td>
+</tr>
+<tr class="odd">
+<td align="left">education_fieldOther</td>
+<td align="right">1728</td>
+</tr>
+<tr class="even">
+<td align="left">education_fieldTechnical Degree</td>
+<td align="right">1728</td>
+</tr>
+<tr class="odd">
+<td align="left">total_working_years</td>
+<td align="right">1728</td>
+</tr>
+<tr class="even">
+<td align="left">training_times_last_year</td>
+<td align="right">1728</td>
+</tr>
+<tr class="odd">
+<td align="left">years_with_curr_manager</td>
+<td align="right">1728</td>
+</tr>
+<tr class="even">
+<td align="left">years_at_company</td>
+<td align="right">1691</td>
+</tr>
+<tr class="odd">
+<td align="left">job_roleResearch Director</td>
+<td align="right">1598</td>
+</tr>
+<tr class="even">
+<td align="left">avg_weekly_hours</td>
+<td align="right">1296</td>
+</tr>
+<tr class="odd">
+<td align="left">business_travelTravel Frequently</td>
+<td align="right">1296</td>
+</tr>
+<tr class="even">
+<td align="left">business_travelTravel Rarely</td>
+<td align="right">1296</td>
+</tr>
+<tr class="odd">
+<td align="left">work_life_balance</td>
+<td align="right">1296</td>
+</tr>
+<tr class="even">
+<td align="left">num_companies_worked</td>
+<td align="right">1193</td>
+</tr>
+<tr class="odd">
+<td align="left">marital_statusMarried</td>
+<td align="right">1039</td>
+</tr>
+<tr class="even">
+<td align="left">percent_salary_hike</td>
+<td align="right">676</td>
+</tr>
+<tr class="odd">
+<td align="left">years_since_last_promotion</td>
+<td align="right">610</td>
+</tr>
+<tr class="even">
+<td align="left">monthly_income</td>
+<td align="right">481</td>
+</tr>
+<tr class="odd">
+<td align="left">performance_rating</td>
+<td align="right">130</td>
+</tr>
+<tr class="even">
+<td align="left">job_roleResearch Scientist</td>
+<td align="right">97</td>
+</tr>
+<tr class="odd">
+<td align="left">job_roleManufacturing Director</td>
+<td align="right">88</td>
+</tr>
+<tr class="even">
+<td align="left">education</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">job_roleSales Executive</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">job_level</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">distance_from_home</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">genderMale</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">job_roleHuman Resources</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">job_roleLaboratory Technician</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">job_roleManager</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">job_roleSales Representative</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">stock_option_level</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="odds-ratios-of-significant-terms-across-models" class="section level3">
+<h3>Odds Ratios of Significant Terms Across Models</h3>
+<p>I can also look at the statistically significant terms to see how their odds ratios differ across the models.</p>
+<pre class="r"><code>plot2 &lt;- model_df %&gt;% 
+  filter(!str_detect(term, &quot;Intercept&quot;), p.value &lt; .01) %&gt;% 
+  count(term, estimate) %&gt;% 
+  mutate(term = str_to_sentence(str_replace_all(term, &quot;_&quot;, &quot; &quot;))) %&gt;% 
+  filter(estimate != 0, !str_detect(term, &quot;income&quot;)) %&gt;% 
+  mutate(term = str_replace_all(term, &quot;Marital status&quot;, &quot;Marital status: &quot;),
+         term = str_replace_all(term, &quot;Job role&quot;, &quot;Job role: &quot;),
+         term = str_replace_all(term, &quot;Education field&quot;, &quot;Field: &quot;),
+         term = str_replace_all(term, &quot;Department&quot;, &quot;Dept: &quot;),
+         term = str_replace_all(term, &quot;Business travel&quot;, &quot;Travel: &quot;))
+
+ggplot(plot2, aes(x = estimate, y = term, fill = term)) +
+  geom_density_ridges(scale = 2
+) +
+  theme_ridges() + 
+  scale_x_continuous(name = &quot;Odds Ratio&quot;)+
+  theme(legend.position = &quot;none&quot;)+
+  ggtitle(&quot;Likelihood of Attrition&quot;, subtitle = &quot;by Significant Terms Across All Models&quot;)+
+  my_theme+
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_text(family = &quot;Arial&quot;, hjust = .5))</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>It looks like people who travel frequently have some of the highest odds ratios, which means they are more likely to leave their jobs. People who travel rarely are also likely to leave - in comparison to those who don’t travel at all. Single people and research directors also have high likelihoods of leaving. These four variables also seem to vary the most in terms of the odds ratio across all models. For example the lowest odds ratio for marital status: single was around 2.6 and the highest was around 3.4.</p>
+<p>Average weekly hours, number of companies worked for, and years since last promotion all had a slightly higher likelihood of leaving, and their odds ratios were quite similar across all models. The lowest odds ratio for average weekly hours was 1.08, and the highest was 1.096.</p>
+<p>Some variables are associated with lower likelihood of leaving, for example age (older) and years at the company, some education fields and job roles.</p>
+</div>
+<div id="selecting-a-final-model" class="section level3">
+<h3>Selecting a Final Model</h3>
+<p>I could use the information in the previous chart to filter down and select a final model. For example, I might want to ensure that the travel variable is included, along with marital status. And make sure they are both significant in whatever models I bring up. This set of filtering criteria gives me 648 models to choose from.</p>
+<p>Speaking of marital status, there are so many good spouse-related posts.</p>
+<ul>
+<li>A <a href="https://www.askamanager.org/2020/08/job-candidates-suspicious-husband-photographed-me-before-her-interview.html">job candidate’s suspicious husband</a> photographs her interviewer</li>
+<li>When you <a href="https://www.askamanager.org/2019/11/ive-been-accidentally-dating-my-bosss-husband.html">accidentally start dating your new boss’s husband</a></li>
+</ul>
+<p>And speaking of travel, this is one of my favorite posts ever - this poor woman got in trouble for what she was wearing <a href="https://www.askamanager.org/2016/11/im-in-trouble-for-what-i-wore-when-when-my-boss-made-me-pick-him-up-for-the-airport-in-the-middle-of-the-night.html">when her boss made her pick him up in the middle of the night</a>. Just… wtf?</p>
+<pre class="r"><code>temp_models &lt;- model_df %&gt;% 
+  group_by(model_name) %&gt;% 
+  filter(any(str_detect(term, &quot;travel&quot;) &amp; p.value &lt; .05), any(str_detect(term, &quot;marital&quot;) &amp; p.value &lt; .05))
+
+distinct(temp_models, model_name) %&gt;% nrow()</code></pre>
+<pre><code>## [1] 648</code></pre>
+<p>That’s still probably too many, so I’ll add a filter for education field as well, since there are several fields that are less likely to leave. Now there are “only” 216 models.</p>
+<pre class="r"><code>temp_models &lt;- temp_models %&gt;% 
+  group_by(model_name) %&gt;% 
+  filter(any(str_detect(term, &quot;field&quot;) &amp; p.value &lt; .05))
+
+distinct(temp_models, model_name) %&gt;% nrow()</code></pre>
+<pre><code>## [1] 216</code></pre>
+<p>You know what they say, people don’t quit a job they quit a boss. Especially if they have one of the <a href="https://www.askamanager.org/2020/12/the-worst-boss-of-2020-is.html">worst bosses of 2020</a>. Let’s also keep the years with current manager and job satisfaction variables. Down to only 36 models.</p>
+<pre class="r"><code>temp_models &lt;- temp_models %&gt;% 
+  group_by(model_name) %&gt;% 
+  filter(any(str_detect(term, &quot;job_sat&quot;) &amp; p.value &lt; .05), any(str_detect(term, &quot;manager&quot;) &amp; p.value &lt; .05))
+
+distinct(temp_models, model_name) %&gt;% nrow()</code></pre>
+<pre><code>## [1] 36</code></pre>
+<p>It looks like model 4998 is the winner with the lowest AIC out of those 36. All of the variables are significant except for job_level, which is probably fine.</p>
+<pre class="r"><code>temp_models &lt;- temp_models %&gt;% 
+  ungroup() %&gt;% 
+  filter(AIC == min(AIC))
+
+temp_models %&gt;% 
+  head() %&gt;% 
+  print()</code></pre>
+<pre><code>## # A tibble: 6 x 14
+##   model_name term     estimate std.error statistic p.value null.deviance df.null
+##        &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+## 1       4998 (Interc…    1.44      0.365      1.01   0.314         3876.    4380
+## 2       4998 total_w…    0.948     0.008     -6.90   0             3876.    4380
+## 3       4998 marital…    1.27      0.13       1.83   0.067         3876.    4380
+## 4       4998 marital…    2.83      0.128      8.14   0             3876.    4380
+## 5       4998 years_w…    0.911     0.016     -5.74   0             3876.    4380
+## 6       4998 busines…    3.93      0.198      6.90   0             3876.    4380
+## # … with 6 more variables: logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;, deviance &lt;dbl&gt;,
+## #   df.residual &lt;dbl&gt;, nobs &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</div>
+<div id="using-the-model" class="section level1">
+<h1>Using the Model</h1>
+<p>What to do with the information from all these models? Some companies actually use predictive models that spy on their employees’ work computers and monitor their emails and LinkedIn activity to try and figure out who is thinking about leaving. What they do with this information may or may not be good (like a retention bonus), but it’s still creepy either way. I could create a sort of “attrition score” using the variables in this model.</p>
+<div id="item-analysis" class="section level2 tabset">
+<h2>Item Analysis</h2>
+<p>Create some scores for each item in the model. Here I’ll write a little function to tell me the proportion of staff who left for each variable so I don’t have to copy and paste so much.</p>
+<pre class="r"><code>tbl_att &lt;- function(df, col){
+  col &lt;- enquo(col)
+  
+  df %&gt;% 
+    count(!!col, attrition) %&gt;% 
+    group_by(!!col) %&gt;% 
+    mutate(pct = scales::percent(n/sum(n), accuracy = .1)) %&gt;% 
+    filter(attrition == &quot;Yes&quot;)
+}</code></pre>
+<div id="total-number-of-working-years" class="section level3">
+<h3>Total Number of Working Years</h3>
+<p>Looks like people who have worked for 0-1 years total have a high proportion of leavers.</p>
+<pre class="r"><code>tbl_att(data, total_working_years)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["total_working_years"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"0","2":"Yes","3":"15","4":"45.5%"},{"1":"1","2":"Yes","3":"119","4":"49.2%"},{"1":"2","2":"Yes","3":"27","4":"29.0%"},{"1":"3","2":"Yes","3":"27","4":"21.4%"},{"1":"4","2":"Yes","3":"36","4":"19.0%"},{"1":"5","2":"Yes","3":"48","4":"18.2%"},{"1":"6","2":"Yes","3":"66","4":"17.6%"},{"1":"7","2":"Yes","3":"54","4":"22.2%"},{"1":"8","2":"Yes","3":"47","4":"15.3%"},{"1":"9","2":"Yes","3":"30","4":"10.5%"},{"1":"10","2":"Yes","3":"75","4":"12.4%"},{"1":"11","2":"Yes","3":"21","4":"19.8%"},{"1":"12","2":"Yes","3":"15","4":"10.4%"},{"1":"13","2":"Yes","3":"9","4":"8.3%"},{"1":"14","2":"Yes","3":"12","4":"12.9%"},{"1":"15","2":"Yes","3":"15","4":"12.5%"},{"1":"16","2":"Yes","3":"9","4":"8.1%"},{"1":"17","2":"Yes","3":"9","4":"9.1%"},{"1":"18","2":"Yes","3":"12","4":"14.8%"},{"1":"19","2":"Yes","3":"9","4":"13.6%"},{"1":"20","2":"Yes","3":"6","4":"6.7%"},{"1":"21","2":"Yes","3":"3","4":"2.9%"},{"1":"22","2":"Yes","3":"6","4":"9.7%"},{"1":"23","2":"Yes","3":"6","4":"9.1%"},{"1":"24","2":"Yes","3":"9","4":"16.7%"},{"1":"25","2":"Yes","3":"3","4":"7.1%"},{"1":"26","2":"Yes","3":"3","4":"7.1%"},{"1":"28","2":"Yes","3":"3","4":"7.1%"},{"1":"31","2":"Yes","3":"3","4":"11.1%"},{"1":"33","2":"Yes","3":"3","4":"14.3%"},{"1":"34","2":"Yes","3":"3","4":"20.0%"},{"1":"40","2":"Yes","3":"6","4":"100.0%"},{"1":"NA","2":"Yes","3":"2","4":"22.2%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(total_working_years_score = ifelse(total_working_years &lt; 2 &amp; !is.na(total_working_years), 2, 0))
+
+tbl_att(data, total_working_years_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">total_working_years_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">577</td>
+<td align="left">14.0%</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Yes</td>
+<td align="right">134</td>
+<td align="left">48.7%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="marital-status" class="section level3">
+<h3>Marital Status</h3>
+<p>Single people have the highest proportion of attrition</p>
+<pre class="r"><code>tbl_att(data, marital_status)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["marital_status"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Divorced","2":"Yes","3":"99","4":"10.1%"},{"1":"Married","2":"Yes","3":"252","4":"12.5%"},{"1":"Single","2":"Yes","3":"360","4":"25.5%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(marital_status_score = ifelse(marital_status == &quot;Single&quot;, 1, 0))
+
+tbl_att(data, marital_status_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">marital_status_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">351</td>
+<td align="left">11.7%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Yes</td>
+<td align="right">360</td>
+<td align="left">25.5%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="years-with-current-manager" class="section level3">
+<h3>Years with Current Manager</h3>
+<p>People with new managers (or new-to-them managers) are more likely to leave.</p>
+<pre class="r"><code>tbl_att(data, years_with_curr_manager)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["years_with_curr_manager"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"0","2":"Yes","3":"255","4":"32.3%"},{"1":"1","2":"Yes","3":"33","4":"14.5%"},{"1":"2","2":"Yes","3":"150","4":"14.5%"},{"1":"3","2":"Yes","3":"57","4":"13.4%"},{"1":"4","2":"Yes","3":"33","4":"11.2%"},{"1":"5","2":"Yes","3":"12","4":"12.9%"},{"1":"6","2":"Yes","3":"12","4":"13.8%"},{"1":"7","2":"Yes","3":"93","4":"14.4%"},{"1":"8","2":"Yes","3":"30","4":"9.3%"},{"1":"9","2":"Yes","3":"18","4":"9.4%"},{"1":"10","2":"Yes","3":"9","4":"11.1%"},{"1":"11","2":"Yes","3":"3","4":"4.5%"},{"1":"14","2":"Yes","3":"6","4":"40.0%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(years_manager_score = ifelse(years_with_curr_manager == 0, 1, 0))
+
+tbl_att(data, years_manager_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">years_manager_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">456</td>
+<td align="left">12.6%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Yes</td>
+<td align="right">255</td>
+<td align="left">32.3%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="business-travel" class="section level3">
+<h3>Business Travel</h3>
+<p>People who travel at all are more likely to leave than those who don’t travel, but people who travel frequently have a higher proportion of attrition.</p>
+<pre class="r"><code>tbl_att(data, business_travel)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["business_travel"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Non-Travel","2":"Yes","3":"36","4":"8.0%"},{"1":"Travel Frequently","2":"Yes","3":"207","4":"24.9%"},{"1":"Travel Rarely","2":"Yes","3":"468","4":"15.0%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(travel_score = ifelse(business_travel == &quot;Travel Frequently&quot;, 2, 
+                               ifelse(business_travel == &quot;Travel Rarely&quot;, 1, 0)))
+
+tbl_att(data, travel_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">travel_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">36</td>
+<td align="left">8.0%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Yes</td>
+<td align="right">468</td>
+<td align="left">15.0%</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Yes</td>
+<td align="right">207</td>
+<td align="left">24.9%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="job-level" class="section level3">
+<h3>Job Level</h3>
+<p>Job level wasn’t significant in the model and I can see why, there’s not much distinction between levels as far as attrition goes. Maybe I’ll just reverse code for job level 5.</p>
+<pre class="r"><code>tbl_att(data, job_level)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["job_level"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"Yes","3":"252","4":"15.5%"},{"1":"2","2":"Yes","3":"285","4":"17.8%"},{"1":"3","2":"Yes","3":"96","4":"14.7%"},{"1":"4","2":"Yes","3":"51","4":"16.0%"},{"1":"5","2":"Yes","3":"27","4":"13.0%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(job_level_score = ifelse(job_level == 5, -1, 0))
+
+tbl_att(data, job_level_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">job_level_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-1</td>
+<td align="left">Yes</td>
+<td align="right">27</td>
+<td align="left">13.0%</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">684</td>
+<td align="left">16.3%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="education-field" class="section level3">
+<h3>Education Field</h3>
+<p>Human resources are much more likely to leave than any other education field. This is the variable all the others in the model tested against, so it makes sense why all the other education fields looked like they were less likely to leave. What’s up with HR?</p>
+<pre class="r"><code>tbl_att(data, education_field)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["education_field"],"name":[1],"type":["chr"],"align":["left"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Human Resources","2":"Yes","3":"33","4":"40.7%"},{"1":"Life Sciences","2":"Yes","3":"303","4":"16.7%"},{"1":"Marketing","2":"Yes","3":"75","4":"15.7%"},{"1":"Medical","2":"Yes","3":"225","4":"16.2%"},{"1":"Other","2":"Yes","3":"30","4":"12.2%"},{"1":"Technical Degree","2":"Yes","3":"45","4":"11.4%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(education_field_score = ifelse(education_field == &quot;Human Resources&quot;, 2, 0))
+
+tbl_att(data, education_field_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">education_field_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">678</td>
+<td align="left">15.7%</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Yes</td>
+<td align="right">33</td>
+<td align="left">40.7%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="training-times-last-year" class="section level3">
+<h3>Training Times Last Year</h3>
+<p>It looks like maybe people who had a lot of training had lower attrition.</p>
+<pre class="r"><code>tbl_att(data, training_times_last_year)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["training_times_last_year"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"0","2":"Yes","3":"30","4":"18.5%"},{"1":"1","2":"Yes","3":"30","4":"14.1%"},{"1":"2","2":"Yes","3":"282","4":"17.2%"},{"1":"3","2":"Yes","3":"258","4":"17.5%"},{"1":"4","2":"Yes","3":"48","4":"13.0%"},{"1":"5","2":"Yes","3":"51","4":"14.3%"},{"1":"6","2":"Yes","3":"12","4":"6.2%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(training_score = ifelse(training_times_last_year &lt; 4, 1, 0))
+
+tbl_att(data, training_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">training_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">111</td>
+<td align="left">12.1%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Yes</td>
+<td align="right">600</td>
+<td align="left">17.2%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="job-satisfaction" class="section level3">
+<h3>Job Satisfaction</h3>
+<p>Job satisfaction - 4 is very high, 1 is low.</p>
+<pre class="r"><code>tbl_att(data, job_satisfaction)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["job_satisfaction"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["attrition"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["pct"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"Yes","3":"197","4":"22.9%"},{"1":"2","2":"Yes","3":"138","4":"16.4%"},{"1":"3","2":"Yes","3":"219","4":"16.6%"},{"1":"4","2":"Yes","3":"156","4":"11.4%"},{"1":"NA","2":"Yes","3":"1","4":"5.0%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  mutate(job_satisfaction_score = ifelse(is.na(job_satisfaction) | job_satisfaction == 4, 0,
+                                         ifelse(between(job_satisfaction, 2,3), 1, 2))) 
+
+tbl_att(data, job_satisfaction_score) %&gt;% 
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">job_satisfaction_score</th>
+<th align="left">attrition</th>
+<th align="right">n</th>
+<th align="left">pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">Yes</td>
+<td align="right">157</td>
+<td align="left">11.3%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Yes</td>
+<td align="right">357</td>
+<td align="left">16.5%</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Yes</td>
+<td align="right">197</td>
+<td align="left">22.9%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="attrition-risk-score-and-level" class="section level2">
+<h2>Attrition Risk Score and Level</h2>
+<p>Now add them all up to create a score and plot it. There are some people who have an attrition score of 0, by the way, but none of them left.</p>
+<pre class="r"><code>data &lt;- data %&gt;% 
+  select(employee_id, contains(&quot;score&quot;)) %&gt;% 
+  mutate(attrition_score = rowSums(.)) %&gt;% 
+  mutate(attrition_score = attrition_score -employee_id) %&gt;% 
+  left_join(data)
+
+p1 &lt;- count(data, attrition_score, attrition) %&gt;% 
+  group_by(attrition_score) %&gt;% 
+  mutate(pct = n/sum(n)) %&gt;% 
+  filter(attrition == &quot;Yes&quot;) %&gt;% 
+  ggplot(aes(x = attrition_score, y = pct))+
+  scale_y_continuous(name = &quot;Percent Attrition&quot;, labels = scales::percent)+
+  scale_x_continuous(name = &quot;Attrition Score&quot;, breaks = seq(1,11,1))+
+  geom_line(color = pal.9[6], size = 1.2)+
+  my_theme</code></pre>
+<p>I can also make a risk level based on the scores.</p>
+<pre class="r"><code>data &lt;- data %&gt;%
+  mutate(attrition_level = factor(
+    ifelse(
+      between(attrition_score, 0, 3),
+      &quot;Low&quot;,
+      ifelse(between(attrition_score, 4, 6), &quot;Medium&quot;, &quot;High&quot;)
+    ),
+    levels = c(&quot;Low&quot;, &quot;Medium&quot;, &quot;High&quot;)
+  ))
+
+
+p2 &lt;- data %&gt;% 
+  count(attrition_level, attrition) %&gt;% 
+  group_by(attrition_level) %&gt;% 
+  mutate(pct = n/sum(n)) %&gt;% 
+  filter(attrition == &quot;Yes&quot;) %&gt;% 
+  ggplot(aes(x = attrition_level, y = pct, fill = attrition_level))+
+  geom_col()+
+  geom_text(aes(x = attrition_level, y = pct, label = scales::percent(pct), group = attrition_level),
+                  position = position_stack(vjust = .5), color = &quot;white&quot;, size = 5)+
+  scale_fill_manual(values = c(pal.9[7], pal.9[8], pal.9[9]))+
+  labs(x = &quot;Attrition Level&quot;)+
+  my_theme+
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank())</code></pre>
+<pre class="r"><code>ggpubr::ggarrange(p1, p2, align = &#39;hv&#39;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-44-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Next time maybe I’ll do some latent profile analysis on this dataset.</p>
+</div>
+</div>
