@@ -3,10 +3,10 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.kpress.dev/blog/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
   </url><url>
     <loc>https://www.kpress.dev/categories/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -58,8 +58,14 @@
                 href="https://www.kpress.dev/categories/"
                 />
   </url><url>
+    <loc>https://www.kpress.dev/blog/2021-01-03-fight-the-future/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
+    <loc>https://www.kpress.dev/tags/forecasting/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
+  </url><url>
     <loc>https://www.kpress.dev/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -112,19 +118,19 @@
                 />
   </url><url>
     <loc>https://www.kpress.dev/tags/plot/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
   </url><url>
     <loc>https://www.kpress.dev/categories/r/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
   </url><url>
-    <loc>https://www.kpress.dev/tags/regression/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <loc>https://www.kpress.dev/categories/stocks/</loc>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
   </url><url>
     <loc>https://www.kpress.dev/tags/stocks/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
   </url><url>
     <loc>https://www.kpress.dev/tags/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
+    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -175,18 +181,6 @@
                 hreflang="en"
                 href="https://www.kpress.dev/tags/"
                 />
-  </url><url>
-    <loc>https://www.kpress.dev/blog/2021-06-22-the-office-part-i/</loc>
-    <lastmod>2021-06-21T21:13:14-05:00</lastmod>
-  </url><url>
-    <loc>https://www.kpress.dev/blog/2021-01-03-fight-the-future/</loc>
-    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
-  </url><url>
-    <loc>https://www.kpress.dev/tags/forecasting/</loc>
-    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
-  </url><url>
-    <loc>https://www.kpress.dev/categories/stocks/</loc>
-    <lastmod>2021-06-13T21:13:14-05:00</lastmod>
   </url><url>
     <loc>https://www.kpress.dev/tags/charts/</loc>
     <lastmod>2021-01-03T21:13:14-05:00</lastmod>
