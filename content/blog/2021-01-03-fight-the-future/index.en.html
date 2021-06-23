@@ -221,19 +221,22 @@ df &lt;- df %&gt;%
   mutate(date2 = floor_date(ds, unit = &quot;weeks&quot;)) %&gt;% 
   left_join(google_trend %&gt;% select(date2, hits, log_hits))
 
-m5 &lt;- prophet(df, holidays = generated_holidays)
-
-future5 &lt;- make_future_dataframe(m5, periods = 365)
-
-future5 &lt;- future5 %&gt;% 
-  mutate(date2 = floor_date(ds, &quot;weeks&quot;)) %&gt;% 
-  left_join(google_trend %&gt;% select(date2, hits, log_hits))
-
+#remove df
 m5 &lt;- prophet(holidays = generated_holidays)
 
 m5 &lt;- add_regressor(m5, &quot;hits&quot;)
 
 m5 &lt;- fit.prophet(m5, df)
+
+#move these two after the fit
+future5 &lt;- make_future_dataframe(m5, periods = 365)
+
+future5 &lt;- future5 %&gt;% 
+  mutate(week_day = wday(ds)) %&gt;% 
+  filter(between(week_day, 2,6)) %&gt;% 
+  mutate(date2 = floor_date(ds, &quot;weeks&quot;)) %&gt;% 
+  left_join(google_trend %&gt;% select(date2, hits, log_hits))
+
 
 avg.hits &lt;- future5 %&gt;% summarise(avg = mean(hits, na.rm=TRUE)) %&gt;% pull(avg)
 
@@ -252,7 +255,7 @@ test5 &lt;- plot(m5, forecast5)</code></pre>
 <li>Uncertainty increases after January 2022, but it is still much better than the first one-year prediction with the increased flexibility.</li>
 </ul>
 <p>The green line below the chart is just the log scale of the Google trend data so you can see how that played out especially during the price increases.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 </div>
 <div id="my-picks-week-of-june-14th-2021" class="section level2">
@@ -282,7 +285,7 @@ test5 &lt;- plot(m5, forecast5)</code></pre>
   facet_wrap(~ ticker, ncol = 2, scale = &quot;free_y&quot;) +
   my_theme</code></pre>
 <pre><code>## Warning: Removed 30 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <div id="clx" class="section level3">
 <h3>CLX</h3>
 <p>I picked this ticker because:</p>
@@ -292,33 +295,33 @@ test5 &lt;- plot(m5, forecast5)</code></pre>
 <li>Calls are cheap</li>
 </ol>
 <p>It might not be the best prediction chart, but the charts are not the only basis for this pick. I’m planning on entering early this coming week.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
 <div id="eng" class="section level3">
 <h3>ENG</h3>
 <p>I traded this before and sold at the peak, I think it has another run coming. If it can get above $3 and hold I will take a call position.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 <div id="mnmd" class="section level3">
 <h3>MNMD</h3>
 <p>Mindmed benefitted from the Google trend data, but I didn’t plot it because it was very messy looking. I’m bullish on this ticker and sector overall for similar reasons as the cannabis stocks.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 </div>
 <div id="spce" class="section level3">
 <h3>SPCE</h3>
 <p>I like SPCE overall, but I think it’s due for a pretty sharp drop before the next leg up, which is why I have short term puts.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 <div id="tlry" class="section level3">
 <h3>TLRY</h3>
 <p>TLRY was another case where the Google trend data improved the model quite a bit (not all of them were useful). I didn’t include the Google trend line because it was too messy with the actual numbers and not super useful on the log scale.</p>
 <p>Tilray is more of a long-term swing for me, I bought some shares when it was around $17 recently to sell covered calls. Very bullish on this in the near future, and the whole sector really.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 </div>
 <div id="uavs" class="section level3">
 <h3>UAVS</h3>
 <p>UAVS is a drone play and I really like the chart setup here. With the historical data it just looks like a giant cup and handle. Drones were also featured in ARK’s <a href="https://ark-invest.com/big-ideas-2021/">Big Ideas 2021</a>.</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>And that’s all for today. Maybe I’ll check back in a year and see what actually happened. In the meantime, I’ll be busy researching - and hopefully making money.</p>
 </div>
 </div>

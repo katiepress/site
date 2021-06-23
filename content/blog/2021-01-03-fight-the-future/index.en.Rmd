@@ -345,7 +345,7 @@ At this point, I realized that I had NAs in my Google trend data because (duh) t
 5. Run the forecast and plot the model.
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 df <- stocks %>% 
   filter(ticker == "BB") %>% 
   select("ds" = ref_date, "y" = price_close)
@@ -378,6 +378,56 @@ m5 <- prophet(holidays = generated_holidays)
 m5 <- add_regressor(m5, "hits")
 
 m5 <- fit.prophet(m5, df)
+
+avg.hits <- future5 %>% summarise(avg = mean(hits, na.rm=TRUE)) %>% pull(avg)
+
+future5 <- future5 %>% 
+  mutate(hits = replace_na(hits, avg.hits),
+         log_hits = log(hits))
+
+forecast5 <- predict(m5, future5)
+
+test5 <- plot(m5, forecast5)
+
+```
+
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+df <- stocks %>% 
+  filter(ticker == "BB") %>% 
+  select("ds" = ref_date, "y" = price_close)
+
+google_trend <- gtrends(
+  keyword = "BB",
+  geo = "US",
+  onlyInterest = TRUE,
+  time = "2017-06-11 2021-06-11"
+)$interest_over_time
+
+google_trend <- google_trend %>%
+  mutate(log_hits = log(hits)) %>%
+  mutate(date2 = floor_date(date, "weeks"))
+
+df <- df %>% 
+  mutate(date2 = floor_date(ds, unit = "weeks")) %>% 
+  left_join(google_trend %>% select(date2, hits, log_hits))
+
+#remove df
+m5 <- prophet(holidays = generated_holidays)
+
+m5 <- add_regressor(m5, "hits")
+
+m5 <- fit.prophet(m5, df)
+
+#move these two after the fit
+future5 <- make_future_dataframe(m5, periods = 365)
+
+future5 <- future5 %>% 
+  mutate(week_day = wday(ds)) %>% 
+  filter(between(week_day, 2,6)) %>% 
+  mutate(date2 = floor_date(ds, "weeks")) %>% 
+  left_join(google_trend %>% select(date2, hits, log_hits))
+
 
 avg.hits <- future5 %>% summarise(avg = mean(hits, na.rm=TRUE)) %>% pull(avg)
 
@@ -638,6 +688,8 @@ m5 <- prophet(df2, changepoint.prior.scale = 0.05, holidays = generated_holidays
 future5 <- make_future_dataframe(m5, periods = 120)
 
 future5 <- future5 %>% 
+  mutate(week_day = wday(ds)) %>% 
+  filter(between(week_day, 2,6)) %>% 
   mutate(date2 = floor_date(ds, "weeks")) %>% 
   left_join(google_trend2 %>% select(date2, hits, log_hits))
 
@@ -730,6 +782,8 @@ m5 <- prophet(df2, changepoint.prior.scale = 0.005, holidays = generated_holiday
 future5 <- make_future_dataframe(m5, periods = 120)
 
 future5 <- future5 %>% 
+  mutate(week_day = wday(ds)) %>% 
+  filter(between(week_day, 2,6)) %>% 
   mutate(date2 = floor_date(ds, "weeks")) %>% 
   left_join(google_trend2 %>% select(date2, hits, log_hits))
 
@@ -825,6 +879,8 @@ m5 <- prophet(df2, changepoint.prior.scale = 0.05, holidays = generated_holidays
 future5 <- make_future_dataframe(m5, periods = 120)
 
 future5 <- future5 %>% 
+  mutate(week_day = wday(ds)) %>% 
+  filter(between(week_day, 2,6)) %>% 
   mutate(date2 = floor_date(ds, "weeks")) %>% 
   left_join(google_trend2 %>% select(date2, hits, log_hits))
 

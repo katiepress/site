@@ -269,6 +269,9 @@ At this point, I realized that I had NAs in my Google trend data because (duh) t
 
 
 
+
+
+
 ```r
 df <- stocks %>% 
   filter(ticker == "BB") %>% 
@@ -289,19 +292,22 @@ df <- df %>%
   mutate(date2 = floor_date(ds, unit = "weeks")) %>% 
   left_join(google_trend %>% select(date2, hits, log_hits))
 
-m5 <- prophet(df, holidays = generated_holidays)
-
-future5 <- make_future_dataframe(m5, periods = 365)
-
-future5 <- future5 %>% 
-  mutate(date2 = floor_date(ds, "weeks")) %>% 
-  left_join(google_trend %>% select(date2, hits, log_hits))
-
+#remove df
 m5 <- prophet(holidays = generated_holidays)
 
 m5 <- add_regressor(m5, "hits")
 
 m5 <- fit.prophet(m5, df)
+
+#move these two after the fit
+future5 <- make_future_dataframe(m5, periods = 365)
+
+future5 <- future5 %>% 
+  mutate(week_day = wday(ds)) %>% 
+  filter(between(week_day, 2,6)) %>% 
+  mutate(date2 = floor_date(ds, "weeks")) %>% 
+  left_join(google_trend %>% select(date2, hits, log_hits))
+
 
 avg.hits <- future5 %>% summarise(avg = mean(hits, na.rm=TRUE)) %>% pull(avg)
 
@@ -323,7 +329,7 @@ The results are actually pretty cool, it seems that even though we don't have ma
 
 The green line below the chart is just the log scale of the Google trend data so you can see how that played out especially during the price increases.  
 
-<img src="index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 
 ## My Picks Week of June 14th 2021
@@ -361,7 +367,7 @@ stocks %>%
 ## Warning: Removed 30 row(s) containing missing values (geom_path).
 ```
 
-<img src="index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
 ### CLX 
 
@@ -373,7 +379,7 @@ I picked this ticker because:
 
 It might not be the best prediction chart, but the charts are not the only basis for this pick. I'm planning on entering early this coming week. 
 
-<img src="index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 
 ### ENG
 
@@ -381,7 +387,7 @@ I traded this before and sold at the peak, I think it has another run coming. If
 
 
 
-<img src="index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 ### MNMD
 
@@ -389,14 +395,14 @@ I traded this before and sold at the peak, I think it has another run coming. If
 
 Mindmed benefitted from the Google trend data, but I didn't plot it because it was very messy looking. I'm bullish on this ticker and sector overall for similar reasons as the cannabis stocks. 
 
-<img src="index.en_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 
 ### SPCE
 
 
 I like SPCE overall, but I think it's due for a pretty sharp drop before the next leg up, which is why I have short term puts.  
 
-<img src="index.en_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 
 
 ### TLRY
@@ -406,7 +412,7 @@ TLRY was another case where the Google trend data improved the model quite a bit
 
 Tilray is more of a long-term swing for me, I bought some shares when it was around $17 recently to sell covered calls. Very bullish on this in the near future, and the whole sector really. 
 
-<img src="index.en_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-29-1.png" width="672" />
   
   
 ### UAVS
@@ -414,7 +420,7 @@ Tilray is more of a long-term swing for me, I bought some shares when it was aro
 UAVS is a drone play and I really like the chart setup here. With the historical data it just looks like a giant cup and handle. Drones were also featured in ARK's [Big Ideas 2021](https://ark-invest.com/big-ideas-2021/).
 
 
-<img src="index.en_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="index.en_files/figure-html/unnamed-chunk-30-1.png" width="672" />
 
 And that's all for today. Maybe I'll check back in a year and see what actually happened. In the meantime, I'll be busy researching - and hopefully making money.
 
