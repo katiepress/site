@@ -6,7 +6,16 @@
     <description>Recent content in Blog on Kpress R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Jun 2021 21:02:14 -0500</lastBuildDate><atom:link href="https://www.kpress.dev/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 12 Jul 2021 21:02:14 -0500</lastBuildDate><atom:link href="https://www.kpress.dev/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Office Part II: The Smartest Guys in the Room</title>
+      <link>https://www.kpress.dev/blog/2021-07-12-the-office-part-ii-the-smartest-guys-in-the-room/</link>
+      <pubDate>Mon, 12 Jul 2021 21:02:14 -0500</pubDate>
+      
+      <guid>https://www.kpress.dev/blog/2021-07-12-the-office-part-ii-the-smartest-guys-in-the-room/</guid>
+      <description>Background In The Office Part 1 I used a fake dataset which was good for what I wanted to demonstrate, but not as interesting as using real data. Text data is pretty fun to work with (at least I think so) and I decided to use the Enron email data for this post (title inspired by the book The Smartest Guys In The Room).</description>
+    </item>
+    
     <item>
       <title>The Office Part I: Employee Attrition</title>
       <link>https://www.kpress.dev/blog/2021-06-22-the-office-part-i/</link>
