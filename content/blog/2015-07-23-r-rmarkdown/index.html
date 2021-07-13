@@ -15,6 +15,9 @@ output:
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 <link href="{{< blogdown/postref >}}index_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
 <script src="{{< blogdown/postref >}}index_files/pagedtable/js/pagedtable.js"></script>
+<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="{{< blogdown/postref >}}index_files/pymjs/pym.v1.js"></script>
+<script src="{{< blogdown/postref >}}index_files/widgetframe-binding/widgetframe.js"></script>
 
 
 <div id="r-markdown" class="section level1">
@@ -38,6 +41,34 @@ fit
 ## Coefficients:
 ## (Intercept)        speed  
 ##     -17.579        3.932</code></pre>
+<pre class="r"><code>
+callback &lt;- c(
+  &quot;$(&#39;table.dataTable.display tbody tr:odd&#39;).css(&#39;background-color&#39;, &#39;#e9e8eb&#39;);&quot;,
+  &quot;$(&#39;table.dataTable.display tbody tr:even&#39;).css(&#39;background-color&#39;, &#39;#f4edff&#39;);&quot;
+)
+
+tab &lt;- DT::datatable(cars, 
+              rownames = FALSE, 
+  extensions = &#39;Scroller&#39;, 
+  options = list(
+  deferRender = TRUE,
+  scrollY = 200,
+  scroller = TRUE,
+  scrollX = TRUE,
+  dom = &#39;t&#39;,
+  style = &#39;bootstrap&#39;,
+  class = &#39;table-bordered table-condensed&#39;,
+  initComplete = DT::JS(
+    &quot;function(settings, json) {&quot;,
+    &quot;$(this.api().table().header()).css({&#39;background-color&#39;: &#39;#232928&#39;, &#39;color&#39;: &#39;#fff&#39;});&quot;,
+    &quot;}&quot;)
+),
+  callback = DT::JS(callback))
+
+widgetframe::frameWidget(tab)</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:480px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-1.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<p><a href="https://www.amazon.com/dp/B00EOAS0EK/ref=dp-kindle-redirect?_encoding=UTF8&amp;btkr=1"><em>The Smartest Guys In The Room</em></a></p>
 </div>
 <div id="including-plots" class="section level1">
 <h1>Including Plots</h1>

@@ -28,6 +28,38 @@ fit <- lm(dist ~ speed, data = cars)
 fit
 ```
 
+
+```{r}
+
+callback <- c(
+  "$('table.dataTable.display tbody tr:odd').css('background-color', '#e9e8eb');",
+  "$('table.dataTable.display tbody tr:even').css('background-color', '#f4edff');"
+)
+
+tab <- DT::datatable(cars, 
+              rownames = FALSE, 
+  extensions = 'Scroller', 
+  options = list(
+  deferRender = TRUE,
+  scrollY = 200,
+  scroller = TRUE,
+  scrollX = TRUE,
+  dom = 't',
+  style = 'bootstrap',
+  class = 'table-bordered table-condensed',
+  initComplete = DT::JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#232928', 'color': '#fff'});",
+    "}")
+),
+  callback = DT::JS(callback))
+
+widgetframe::frameWidget(tab)
+```
+
+[*The Smartest Guys In The Room*](https://www.amazon.com/dp/B00EOAS0EK/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1)
+
+
 # Including Plots
 
 You can also embed plots. See Figure \@ref(fig:pie) for example:

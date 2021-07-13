@@ -41,6 +41,44 @@ fit
 ##     -17.579        3.932
 ```
 
+
+
+```r
+
+callback <- c(
+  "$('table.dataTable.display tbody tr:odd').css('background-color', '#e9e8eb');",
+  "$('table.dataTable.display tbody tr:even').css('background-color', '#f4edff');"
+)
+
+tab <- DT::datatable(cars, 
+              rownames = FALSE, 
+  extensions = 'Scroller', 
+  options = list(
+  deferRender = TRUE,
+  scrollY = 200,
+  scroller = TRUE,
+  scrollX = TRUE,
+  dom = 't',
+  style = 'bootstrap',
+  class = 'table-bordered table-condensed',
+  initComplete = DT::JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#232928', 'color': '#fff'});",
+    "}")
+),
+  callback = DT::JS(callback))
+
+widgetframe::frameWidget(tab)
+```
+
+```{=html}
+<div id="htmlwidget-3a51a865e60f4c9251f9" style="width:100%;height:480px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3a51a865e60f4c9251f9">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-1.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+```
+
+[*The Smartest Guys In The Room*](https://www.amazon.com/dp/B00EOAS0EK/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1)
+
+
 # Including Plots
 
 You can also embed plots. See Figure \@ref(fig:pie) for example:
